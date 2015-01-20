@@ -8,15 +8,42 @@ import android.os.Environment;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    static final String DATABASE_CREATE =   
-            "create table basketballshoes( " +
+    static final String BRANDTABLE_CREATE =   
+            "create table brand( " +
             "_id integer primary key autoincrement, " +   
             "brand_name text, " +
-            "brand_pic blob," +
+            "brand_pic blob);"; 
+    static final String SERIESTABLE_CREATE =   
+            "create table series( " +
+            "_id integer primary key autoincrement, " +  
+            "brand_name text, " +
+            "series_pic blob, " +
+            "series_name text);"; 
+    static final String GENERATIONTABLE_CREATE =   
+            "create table generation( " +
+            "_id integer primary key autoincrement, " +   
+            "brand_name text, " +
             "series_name text, " +
             "generation text," +
+            "generation_pic blob)"; 
+    static final String COLORTABLE_CREATE =   
+            "create table color( " +
+            "_id integer primary key autoincrement, " +   
+            "brand_name text, " +
+            "series_name text, " +
+            "generation text," +
+            "color text," +
+            "color_pic blob);"; 
+    static final String SHOESTABLE_CREATE =   
+            "create table shoes( " +
+            "_id integer primary key autoincrement, " +   
+            "brand_name text, " +
+            "series_name text, " +
+            "generation text," +
+            "color text," +
             "shose_name text," +
             "shoes_pic blob," +
+            "shoes_price integer," +
             "shoes_indro text);"; 
     
 	public DBHelper(Context context, String name, CursorFactory factory,
@@ -36,7 +63,11 @@ public class DBHelper extends SQLiteOpenHelper {
 }
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(DATABASE_CREATE);
+		db.execSQL(BRANDTABLE_CREATE);
+		db.execSQL(SERIESTABLE_CREATE);
+		db.execSQL(GENERATIONTABLE_CREATE);
+		db.execSQL(COLORTABLE_CREATE);
+		db.execSQL(SHOESTABLE_CREATE);
 	}
 
 	@Override

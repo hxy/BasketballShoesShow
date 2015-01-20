@@ -11,7 +11,14 @@ import com.hy.database.DBHelper;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Picture;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Menu;
+import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
@@ -21,7 +28,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbAdapter = new DBAdapter(this);
-        dbAdapter.insertOneBrand("Nike", getPicBytes(getResources().openRawResource(R.raw.car)), series_name, generation, shoes_name, shoes_pic, shoes_indro)
+        dbAdapter.insertBrand("Nike", getPicBytes(getResources().openRawResource(R.raw.car)));
+        dbAdapter.insertBrand("361", getPicBytes(getResources().openRawResource(R.raw.engine)));
+        dbAdapter.insertBrand("Adidas", getPicBytes(getResources().openRawResource(R.raw.exterior)));
+        dbAdapter.insertBrand("Peak", getPicBytes(getResources().openRawResource(R.raw.sxm_sports)));
+        dbAdapter.insertBrand("Jordan", getPicBytes(getResources().openRawResource(R.raw.sxm_stock)));
+        
+        Drawable drawable = BitmapFactory.
+        
     }
 
     private byte[] getPicBytes(InputStream inputStream){
