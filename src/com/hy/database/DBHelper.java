@@ -11,14 +11,15 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String BRANDTABLE_CREATE =   
             "create table brand( " +
             "_id integer primary key autoincrement, " +   
-            "brand_name text, " +
+            "brand_name text , " +
             "brand_pic blob);"; 
     static final String SERIESTABLE_CREATE =   
             "create table series( " +
             "_id integer primary key autoincrement, " +  
             "brand_name text, " +
-            "series_pic blob, " +
-            "series_name text);"; 
+            "series_name text, " +
+            "series_indro text, " +
+            "series_pic blob);"; 
     static final String GENERATIONTABLE_CREATE =   
             "create table generation( " +
             "_id integer primary key autoincrement, " +   
@@ -44,6 +45,14 @@ public class DBHelper extends SQLiteOpenHelper {
             "shose_name text," +
             "shoes_pic blob," +
             "shoes_price integer," +
+            "shoes_season text," +
+            "shoes_upper text," +
+            "shoes_upperMaterial text," +
+            "shoes_lowMaterial text," +
+            "shoes_function," +
+            "shoes_position," + //Guard,Forward,Center-forward
+            "shoes_sex," +
+            "shoes_technology," +
             "shoes_indro text);"; 
     
 	public DBHelper(Context context, String name, CursorFactory factory,

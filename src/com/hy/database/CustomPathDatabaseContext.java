@@ -15,7 +15,7 @@ public class CustomPathDatabaseContext extends ContextWrapper {
     
     public CustomPathDatabaseContext(Context base, String dirPath) {
             super(base);
-            this.mDirPath = dirPath + base.getPackageName()+File.separator+"database";
+            this.mDirPath = dirPath + File.separator + "basketballshoesshow" +File.separator+"database";
     }
    
     @Override

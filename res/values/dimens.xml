@@ -3,5 +3,12 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
+    <dimen name="width_listImg">150dp</dimen>
+    <dimen name="height_listImg">100dp</dimen>
+    <dimen name="width_listText">150dp</dimen>
+    <dimen name="height_listItem">100dp</dimen>
+    <dimen name="textsize_listText">28sp</dimen>
+    <dimen name="textsize_introduceText">20sp</dimen>
+    <dimen name="width_listArrow">100dp</dimen>
+    <dimen name="height_listArrow">100dp</dimen>
 </resources>
