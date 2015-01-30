@@ -29,7 +29,6 @@ public class ArrowAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.levelInfo = levelInfo;
-        this.levelInfo.add(list.get(0).getName());
     }
     
     @Override
@@ -62,11 +61,13 @@ public class ArrowAdapter extends BaseAdapter {
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
+//            holder.image.getDrawable().setCallback(null);
         }
         CategoryInfo info = list.get(position);
-        holder.image.setImageBitmap(info.getBitmap());
+        
+        holder.image.setImageDrawable(info.getDrawable(context));
         holder.text.setText(info.getName());
-        holder.arrow.setOnClickListener(new ArrowClickListener());
+        holder.arrow.setOnClickListener(new ArrowClickListener(info.getName()));
         return convertView;
     }
     
@@ -77,11 +78,17 @@ public class ArrowAdapter extends BaseAdapter {
     }
     
     private class ArrowClickListener implements View.OnClickListener{
+        private String name;
+        public ArrowClickListener(String name){
+            this.name = name;
+        }
         @Override
         public void onClick(View v) {
+            levelInfo.add(name);
             Intent intent = new Intent(context,IntroduceActivity.class);
             intent.putExtra("levelInfo", levelInfo);
             context.startActivity(intent);
+            levelInfo.remove(levelInfo.size()-1);
         }
         
     }

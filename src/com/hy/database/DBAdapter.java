@@ -1,5 +1,6 @@
 package com.hy.database;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 import com.hy.objects.Brand;
@@ -14,6 +15,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 
 public class DBAdapter {
 
@@ -102,14 +104,16 @@ public class DBAdapter {
 	
 	public ArrayList<CategoryInfo> getBrandsList(){
 		db = dbHelper.getReadableDatabase();
-		Cursor cursor = db.query("brand", new String[]{"brand_name","brand_pic"}, null, null, null, null, null);
+		Cursor cursor = db.query("brand", new String[]{"_id","brand_name"}, null, null, null, null, null);
 		String name;
 		byte[] bitmapBytes;
+		int id;
 		ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
 		while(cursor.moveToNext()){
 			name = cursor.getString(cursor.getColumnIndex("brand_name"));
 			bitmapBytes = cursor.getBlob(cursor.getColumnIndex("brand_pic"));
-			list.add(new CategoryInfo(name, bitmapBytes));
+			id = cursor.getInt(cursor.getColumnIndex("_id"));
+			list.add(new CategoryInfo("brand",id,name, bitmapBytes));
 		}
 		db.close();
 		return list;
@@ -117,14 +121,16 @@ public class DBAdapter {
 	
 	public ArrayList<CategoryInfo> getSeriesList(String brand){
 		db = dbHelper.getReadableDatabase();
-		Cursor cursor = db.query("series", new String[]{"series_name","series_pic"}, "brand_name=?", new String[]{brand}, null, null, null);
+		Cursor cursor = db.query("series", new String[]{"series_name","_id"}, "brand_name=?", new String[]{brand}, null, null, null);
 		String name;
 		byte[] bitmapBytes;
+		int id;
 		ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
 		while(cursor.moveToNext()){
 		    name = cursor.getString(cursor.getColumnIndex("series_name"));
 		    bitmapBytes = cursor.getBlob(cursor.getColumnIndex("series_pic"));
-		    list.add(new CategoryInfo(name, bitmapBytes));
+		    id = cursor.getInt(cursor.getColumnIndex("_id"));
+		    list.add(new CategoryInfo("series",id,name, bitmapBytes));
 		}
 		db.close();
 		return list;
@@ -139,5 +145,116 @@ public class DBAdapter {
 	    return introduce;
 	    
 	}
+	
+	public ArrayList<CategoryInfo> getGenerationList(String brand,String series){
+	        db = dbHelper.getReadableDatabase();
+	        Cursor cursor = db.query("generation", new String[]{"generation","_id"}, "brand_name=? and series_name=?", new String[]{brand,series}, null, null, null);
+	        String  name;
+	        int id;
+	        byte[] bitmapBytes = null;
+	        ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
+	        while(cursor.moveToNext()){
+	            name = cursor.getString(cursor.getColumnIndex("generation"));
+	            bitmapBytes = cursor.getBlob(cursor.getColumnIndex("generation_pic"));
+	            id = cursor.getInt(cursor.getColumnIndex("_id"));
+	            list.add(new CategoryInfo("generation",id,name, bitmapBytes));
+	        }
+	        db.close();
+	        return list;
+	    }
+	
+	   public ArrayList<CategoryInfo> getColorList(String brand,String series,String generation){
+           db = dbHelper.getReadableDatabase();
+           Cursor cursor = db.query("color", new String[]{"color","_id"}, "brand_name=? and series_name=? and generation = ?", new String[]{brand,series,generation}, null, null, null);
+           String  name;
+           byte[] bitmapBytes;
+           int id;
+           ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
+           while(cursor.moveToNext()){
+               name = cursor.getString(cursor.getColumnIndex("color"));
+               bitmapBytes = cursor.getBlob(cursor.getColumnIndex("color_pic"));
+               id = cursor.getInt(cursor.getColumnIndex("_id"));
+               list.add(new CategoryInfo("color",id,name, bitmapBytes));
+           }
+           db.close();
+           return list;
+       }
+	   
+	   public ArrayList<CategoryInfo> getColorList(String brand,String series){
+	           db = dbHelper.getReadableDatabase();
+	           Cursor cursor = db.query("color", new String[]{"color","_id"}, "brand_name=? and series_name=?", new String[]{brand,series}, null, null, null);
+	           String  name;
+	           byte[] bitmapBytes;
+	           int id;
+	           ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
+	           while(cursor.moveToNext()){
+	               name = cursor.getString(cursor.getColumnIndex("color"));
+	               bitmapBytes = cursor.getBlob(cursor.getColumnIndex("color_pic"));
+	               id = cursor.getInt(cursor.getColumnIndex("_id"));
+	               list.add(new CategoryInfo("color",id,name, bitmapBytes));
+	           }
+	           db.close();
+	           return list;
+	       }
+	   
+       public ArrayList<CategoryInfo> getShoesList(String brand,String series,String generation,String color){
+           db = dbHelper.getReadableDatabase();
+           Cursor cursor = db.query("shoes", new String[]{"shoes_name","_id"}, "brand_name=? and series_name=? and generation = ? and color = ?", new String[]{brand,series,generation,color}, null, null, null);
+           String  name;
+           byte[] bitmapBytes;
+           int id;
+           ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
+           while(cursor.moveToNext()){
+               name = cursor.getString(cursor.getColumnIndex("shoes_name"));
+               bitmapBytes = cursor.getBlob(cursor.getColumnIndex("shoes_pic"));
+               id = cursor.getInt(cursor.getColumnIndex("_id"));
+               list.add(new CategoryInfo("shoes",id,name, bitmapBytes));
+           }
+           db.close();
+           return list;
+       }
+       
+       public ArrayList<CategoryInfo> getShoesList(String brand,String series,String color){
+           db = dbHelper.getReadableDatabase();
+           Cursor cursor = db.query("shoes", new String[]{"shoes_name","_id"}, "brand_name=? and series_name=? and color = ?", new String[]{brand,series,color}, null, null, null);
+           String  name;
+           byte[] bitmapBytes;
+           int id;
+           ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
+           while(cursor.moveToNext()){
+               name = cursor.getString(cursor.getColumnIndex("shoes_name"));
+               bitmapBytes = cursor.getBlob(cursor.getColumnIndex("shoes_pic"));
+               id = cursor.getInt(cursor.getColumnIndex("_id"));
+               list.add(new CategoryInfo("shoes",id,name, bitmapBytes));
+           }
+           db.close();
+           return list;
+       }
+       
+       public Drawable getDrawable(String tableName,int _id){
+           db = dbHelper.getReadableDatabase();
+           String picName = tableName+"_pic";
+           Cursor cursor = db.query(tableName, new String[]{picName}, "_id="+_id, null, null, null, null);
+           if(cursor.getCount()!=0){
+               cursor.moveToFirst();
+               byte[] bitmapBytes = cursor.getBlob(cursor.getColumnIndex(picName));
+               return Drawable.createFromStream(new ByteArrayInputStream(bitmapBytes), null); 
+           }else {
+            return null;
+        }
+
+       }
+//	private ArrayList<CategoryInfo> getCategoryList(Cursor cursor,String name, String pic){
+//        String name;
+//        byte[] bitmapBytes;
+//        ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
+//        while(cursor.moveToNext()){
+//            name = cursor.getString(cursor.getColumnIndex(name));
+//            bitmapBytes = cursor.getBlob(cursor.getColumnIndex(pic));
+//            list.add(new CategoryInfo(name, bitmapBytes));
+//        }
+//        db.close();
+//        return list;
+//	}
 
 }

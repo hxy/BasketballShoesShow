@@ -6,32 +6,49 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import com.hy.adapter.CategoryAdapter;
+import com.hy.application.BSSApplication;
 import com.hy.basketballshoesshow.R;
 import com.hy.database.DBAdapter;
 import com.hy.objects.Brand;
 import com.hy.objects.CategoryInfo;
+import com.hy.objects.Color;
+import com.hy.objects.Generation;
 import com.hy.objects.Series;
+import com.hy.objects.Shoes;
+import com.hy.services.GetPicService;
+import com.hy.services.GetPicService.PicBinder;
 
 import android.os.Bundle;
+import android.os.IBinder;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	private DBAdapter dbAdapter;
 	private ListView brandList;
+	private CategoryAdapter adapter;
+	private GetPicService picService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         insterDataToDataBase();
+        picService = ((BSSApplication)getApplication()).getService();
         setContentView(R.layout.activity_category);
         brandList = (ListView)findViewById(R.id.list);
-        final CategoryAdapter adapter = new CategoryAdapter(this, dbAdapter.getBrandsList());
+        adapter = new CategoryAdapter(this, dbAdapter.getBrandsList());
         brandList.setAdapter(adapter);
         brandList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -46,7 +63,48 @@ public class MainActivity extends Activity {
                 MainActivity.this.startActivity(intent);
             }
         });
+        
+        brandList.setOnScrollListener(new OnScrollListener(){
+
+            private int firstIndex;
+            private int endIndex;
+            private int viewIndex;
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                    int visibleItemCount, int totalItemCount) {
+                firstIndex = firstVisibleItem;
+                endIndex = firstVisibleItem+visibleItemCount-1;
+                
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
+                    for(int n = firstIndex; n <= endIndex; n++){
+                        viewIndex = n-firstIndex;
+                        CategoryInfo info = (CategoryInfo)adapter.getItem(n);
+                        ImageView imageView = ((CategoryAdapter.ViewHolder)(brandList.getChildAt(viewIndex).getTag())).image;
+                        picService.getPic(info.getTabaleName(), info.getId(), imageView);
+                    }
+                }
+            }
+            
+        });
+        
     }
+    
+    
+
+    @SuppressLint("NewApi")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        brandList.setScrollY(25);
+        brandList.setSelection(10);
+        
+    }
+
+
 
     private byte[] getPicBytes(InputStream inputStream){
     	int length = -1;
@@ -63,7 +121,7 @@ public class MainActivity extends Activity {
     }
     
     private void insterDataToDataBase(){
-        dbAdapter = new DBAdapter(this);
+        dbAdapter = ((BSSApplication)getApplication()).getdDbAdapter();
         dbAdapter.insertBrand(new Brand("NIKE", getPicBytes(getResources().openRawResource(R.raw.nike))));
         dbAdapter.insertBrand(new Brand("ANTA", getPicBytes(getResources().openRawResource(R.raw.anta))));
         dbAdapter.insertBrand(new Brand("ADIDAS", getPicBytes(getResources().openRawResource(R.raw.adidas))));
@@ -86,8 +144,43 @@ public class MainActivity extends Activity {
 +"一言蔽之，利用尼龙纤维的张力与气压之间的相互调节来产生避震与反馈的作用。\n"
 +"  因此在理论上，全长式Nike air zoom因为重点受力部位以外区域比前后式的要大，能提供张力的尼龙纤维数量较多，对避震与弹性有帮助，Nike air zoom的设计师自己也提过，全长式Nike air zoom的避震表现总是令人惊讶。"
 +"但是在足弓需要更多支撑而非避震这个角度来看，其实还是可以把Nike air zoom的范围往足弓以外的部份扩展，并且把厚度增加(Nike air zoom)来提高避震能力，并非使用全长式Nike air zoom就一定会比较理想。";
+        dbAdapter.insertSeries(new Series("NIKE", "air", getPicBytes(getResources().openRawResource(R.raw.nike)),seriesIndro));
         dbAdapter.insertSeries(new Series("NIKE", "zoom", getPicBytes(getResources().openRawResource(R.raw.nike)),seriesIndro));
+        
+        dbAdapter.insertGeneration(new Generation("NIKE", "zoom", "I代", getPicBytes(getResources().openRawResource(R.raw.nike))));
+        
+        dbAdapter.insertColor(new Color("NIKE", "zoom", "I代", "黑白",getPicBytes(getResources().openRawResource(R.raw.nike))));
+        dbAdapter.insertColor(new Color("NIKE", "air", "黑白",getPicBytes(getResources().openRawResource(R.raw.nike))));
+        
+        String shoesIntro = "KD VII BHM EP 男子运动鞋以醒目细节向黑人历史月致敬，同时搭载基于大量数据研发而成的稳定片和 180° Nike Zoom 气垫，为你缔造流畅的运动自由度和缓震支撑体验。Flywire 飞线结合 Hyperposite 结构，提升足部稳定性，同时为转向提供卓越动态支撑。";
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "zoom", "I代", "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
+        dbAdapter.insertShoes(new Shoes("NIKE", "air", null, "黑白","NB-110",getPicBytes(getResources().openRawResource(R.raw.nike)),5000,"春季","高帮","尼龙","橡胶","耐磨","前锋","男","气垫",shoesIntro));
     }
+    
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

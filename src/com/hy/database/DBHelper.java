@@ -42,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "series_name text, " +
             "generation text," +
             "color text," +
-            "shose_name text," +
+            "shoes_name text," +
             "shoes_pic blob," +
             "shoes_price integer," +
             "shoes_season text," +

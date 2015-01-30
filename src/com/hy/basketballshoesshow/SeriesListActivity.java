@@ -3,26 +3,46 @@ package com.hy.basketballshoesshow;
 import java.util.ArrayList;
 
 import com.hy.adapter.ArrowAdapter;
+import com.hy.application.BSSApplication;
 import com.hy.database.DBAdapter;
 import com.hy.objects.CategoryInfo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class SeriesListActivity extends Activity {
 
     private ListView seriesListView;
+    private ArrowAdapter seriesAdapter;
+    private ArrayList<String> levelInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         seriesListView = (ListView)findViewById(R.id.list);
-        ArrayList<String> levelInfo = getIntent().getStringArrayListExtra("levelInfo");
-        ArrayList<CategoryInfo> seriesList = new DBAdapter(this).getSeriesList(levelInfo.get(0));
+        levelInfo = getIntent().getStringArrayListExtra("levelInfo");
+        ArrayList<CategoryInfo> seriesList = ((BSSApplication)getApplication()).getdDbAdapter().getSeriesList(levelInfo.get(0));
         if(0!=seriesList.size()){
-            ArrowAdapter seriesAdapter = new ArrowAdapter(this, seriesList, levelInfo);
+            seriesAdapter = new ArrowAdapter(this, seriesList, levelInfo);
             seriesListView.setAdapter(seriesAdapter);
+            seriesListView.setOnItemClickListener(new OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1,
+                        int arg2, long arg3) {
+                    String seriesName = ((CategoryInfo)(seriesAdapter.getItem(arg2))).getName();
+                    levelInfo.add(seriesName);
+                    Intent intent = new Intent(SeriesListActivity.this,GenerationListActivity.class);
+                    intent.putExtra("levelInfo", levelInfo);
+                    SeriesListActivity.this.startActivity(intent);
+                    levelInfo.remove(levelInfo.size()-1);
+                }
+            });
         }
         
     }

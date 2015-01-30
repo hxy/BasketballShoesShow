@@ -11,4 +11,5 @@
     <dimen name="textsize_introduceText">20sp</dimen>
     <dimen name="width_listArrow">100dp</dimen>
     <dimen name="height_listArrow">100dp</dimen>
+    <dimen name="textsize_picName">20sp</dimen>
 </resources>

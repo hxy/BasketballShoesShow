@@ -15,6 +15,14 @@ public class Color {
 		this.name = name;
 		this.bitmapBytes = bitmapBytes;
 	}
+	
+	public Color(String brandName,String seriesName,String name,byte[]bitmapBytes){
+	        this.brandName = brandName;
+	        this.seriesName = seriesName;
+	        this.generation = null;
+	        this.name = name;
+	        this.bitmapBytes = bitmapBytes;
+	    }
 
 	public String getBrandName() {
 		return brandName;

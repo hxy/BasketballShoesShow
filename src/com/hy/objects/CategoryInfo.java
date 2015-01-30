@@ -1,24 +1,24 @@
 package com.hy.objects;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class CategoryInfo {
 
-	private String name;
-	private Bitmap bitmap;
+	private int _id;
+	private String tableName;
 	
-	public CategoryInfo(String name, byte[] bitmapBytes){
-		this.name = name;
-		this.bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+	public CategoryInfo(String tableName,int _id){
+	        this.tableName = tableName;
+	        this._id = _id;
+	    }
+
+
+	public String getTabaleName(){
+	    return tableName;
 	}
 	
-	public String getName() {
-		return name;
+	public int getId(){
+	    return _id;
 	}
 
-	public Bitmap getBitmap() {
-		return bitmap;
-	}
 	
 }

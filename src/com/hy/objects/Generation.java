@@ -13,6 +13,13 @@ public class Generation {
 		this.name = name;
 		this.bitmapBytes = bitmapBytes;
 	}
+	
+	public Generation(String brandName,String seriesName,String name){
+	        this.brandName = brandName;
+	        this.seriesName = seriesName;
+	        this.name = name;
+	        this.bitmapBytes = null;
+	    }
 
 	public String getBrandName() {
 		return brandName;

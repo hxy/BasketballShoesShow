@@ -2,6 +2,7 @@ package com.hy.basketballshoesshow;
 
 import java.util.ArrayList;
 
+import com.hy.application.BSSApplication;
 import com.hy.basketballshoesshow.R;
 import com.hy.database.DBAdapter;
 
@@ -18,7 +19,7 @@ public class IntroduceActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduce);
-        db = new DBAdapter(this);
+        db = ((BSSApplication)getApplication()).getdDbAdapter();
         TextView indroduce = (TextView)findViewById(R.id.introduceText);
         indroduce.setMovementMethod(ScrollingMovementMethod.getInstance()); 
         indroduce.setText(getIntroduce(getIntent()));
