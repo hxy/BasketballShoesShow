@@ -17,6 +17,7 @@ import com.hy.objects.Series;
 import com.hy.objects.Shoes;
 import com.hy.services.GetPicService;
 import com.hy.services.GetPicService.PicBinder;
+import com.hy.tools.CategoryCache;
 
 import android.os.Bundle;
 import android.os.IBinder;
@@ -41,11 +42,13 @@ public class MainActivity extends Activity {
 	private ListView brandList;
 	private CategoryAdapter adapter;
 	private GetPicService picService;
+	private CategoryCache categoryCache;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         insterDataToDataBase();
         picService = ((BSSApplication)getApplication()).getService();
+        categoryCache = ((BSSApplication)getApplication()).getCategoryCache();
         setContentView(R.layout.activity_category);
         brandList = (ListView)findViewById(R.id.list);
         adapter = new CategoryAdapter(this, dbAdapter.getBrandsList());
@@ -56,7 +59,7 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                     long arg3) {
                 ArrayList<String> levelInfo = new ArrayList<String>();
-                String brandName = ((CategoryInfo)(adapter.getItem(arg2))).getName();
+                String brandName = categoryCache.getCategory(((CategoryInfo)(adapter.getItem(arg2))).getKey()).getName();
                 levelInfo.add(brandName);
                 Intent intent = new Intent(MainActivity.this,SeriesListActivity.class);
                 intent.putExtra("levelInfo", levelInfo);
@@ -69,6 +72,7 @@ public class MainActivity extends Activity {
             private int firstIndex;
             private int endIndex;
             private int viewIndex;
+            private CategoryAdapter.ViewHolder holder;
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                     int visibleItemCount, int totalItemCount) {
@@ -83,8 +87,11 @@ public class MainActivity extends Activity {
                     for(int n = firstIndex; n <= endIndex; n++){
                         viewIndex = n-firstIndex;
                         CategoryInfo info = (CategoryInfo)adapter.getItem(n);
-                        ImageView imageView = ((CategoryAdapter.ViewHolder)(brandList.getChildAt(viewIndex).getTag())).image;
-                        picService.getPic(info.getTabaleName(), info.getId(), imageView);
+                        String key = info.getKey();
+                        if(null==categoryCache.getCategory(info.getKey())){
+                        	holder = (CategoryAdapter.ViewHolder)(brandList.getChildAt(viewIndex).getTag());
+                            picService.getPic(info.getTabaleName(), info.getId(), holder);
+                        }
                     }
                 }
             }
@@ -99,8 +106,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        brandList.setScrollY(25);
-        brandList.setSelection(10);
+//        brandList.setScrollY(25);
+//        brandList.setSelection(10);
         
     }
 

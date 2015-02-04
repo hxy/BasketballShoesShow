@@ -25,23 +25,23 @@ public class DBHelper extends SQLiteOpenHelper {
             "_id integer primary key autoincrement, " +   
             "brand_name text, " +
             "series_name text, " +
-            "generation text," +
+            "generation_name text," +
             "generation_pic blob)"; 
     static final String COLORTABLE_CREATE =   
             "create table color( " +
             "_id integer primary key autoincrement, " +   
             "brand_name text, " +
             "series_name text, " +
-            "generation text," +
-            "color text," +
+            "generation_name text," +
+            "color_name text," +
             "color_pic blob);"; 
     static final String SHOESTABLE_CREATE =   
             "create table shoes( " +
             "_id integer primary key autoincrement, " +   
             "brand_name text, " +
             "series_name text, " +
-            "generation text," +
-            "color text," +
+            "generation_name text," +
+            "color_name text," +
             "shoes_name text," +
             "shoes_pic blob," +
             "shoes_price integer," +

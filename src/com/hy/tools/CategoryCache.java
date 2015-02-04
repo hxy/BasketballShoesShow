@@ -4,27 +4,27 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.Hashtable;
 
-import com.hy.objects.CategoryInfo;
+import com.hy.objects.CategoryObject;
 
 public class CategoryCache {
 
     static private CategoryCache cache;// 一个Cache实例
     private Hashtable< String,CategoryRef> categoryRefs;// 用于Chche内容的存储
-    private ReferenceQueue<CategoryInfo> q;// 垃圾Reference的队列
+    private ReferenceQueue<CategoryObject> q;// 垃圾Reference的队列
 
     // 继承SoftReference，使得每一个实例都具有可识别的标识。
-      private class CategoryRef extends SoftReference<CategoryInfo> {
+      private class CategoryRef extends SoftReference<CategoryObject> {
       public String _key = "";
-      public CategoryRef(CategoryInfo info, ReferenceQueue<CategoryInfo> q) {
-       super(info, q);
-       _key = info.getTabaleName()+ ":" +info.getId();
+      public CategoryRef(String key,CategoryObject object, ReferenceQueue<CategoryObject> q) {
+       super(object, q);
+       this._key = key;
      }
     }
 
    // 构建一个缓存器实例
      private CategoryCache() {
          categoryRefs = new Hashtable<String,CategoryRef>();
-         q = new ReferenceQueue<CategoryInfo>();
+         q = new ReferenceQueue<CategoryObject>();
 
     }
 
@@ -39,30 +39,30 @@ public class CategoryCache {
  }
 
    // 以软引用的方式对一个Employee对象的实例进行引用并保存该引用
-    public void cacheCategory(CategoryInfo info) {
+    public void cacheCategory(String key,CategoryObject object) {
      cleanCache();// 清除垃圾引用
-     CategoryRef ref = new CategoryRef(info, q);
-     categoryRefs.put(ref._key, ref);
+     CategoryRef ref = new CategoryRef(key,object, q);
+     categoryRefs.put(key, ref);
     }
 
     // 依据所指定的ID号，重新获取相应Employee对象的实例
-     public CategoryInfo getCategory(String key) {
-         CategoryInfo info = null;
+     public CategoryObject getCategory(String key) {
+         CategoryObject object = null;
          // 缓存中是否有该Employee实例的软引用，如果有，从软引用中取得。
         if (categoryRefs.containsKey(key)) {
             CategoryRef ref = (CategoryRef) categoryRefs.get(key);
-            info = (CategoryInfo) ref.get();
+            object = (CategoryObject) ref.get();
         }
 
  // 如果没有软引用，或者从软引用中得到的实例是null，重新构建一个实例，
  // 并保存对这个新建实例的软引用
 
-// if (info == null) {
-//     info = new Employee(ID);
-//     System.out.println("Retrieve From EmployeeInfoCenter. ID=" + ID);
+// if (object == null) {
+//     object = new Employee(ID);
+//     System.out.println("Retrieve From EmployeeobjectCenter. ID=" + ID);
 //     this.cacheEmployee(em);
 //    }
-    return info;
+    return object;
     }
 
  private void cleanCache() {

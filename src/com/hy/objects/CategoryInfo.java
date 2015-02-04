@@ -20,5 +20,7 @@ public class CategoryInfo {
 	    return _id;
 	}
 
-	
+	public String getKey(){
+		return tableName+_id;
+	}
 }

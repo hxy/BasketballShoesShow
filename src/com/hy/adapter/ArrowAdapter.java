@@ -2,10 +2,14 @@ package com.hy.adapter;
 
 import java.util.ArrayList;
 
+import com.hy.application.BSSApplication;
 import com.hy.basketballshoesshow.IntroduceActivity;
 import com.hy.basketballshoesshow.R;
 import com.hy.objects.CategoryInfo;
+import com.hy.objects.CategoryObject;
 import com.hy.objects.Series;
+import com.hy.tools.CategoryCache;
+import com.hy.tools.Holder;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,12 +27,14 @@ public class ArrowAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private ArrayList<String> levelInfo;
+    private CategoryCache categoryCache;
     
     public ArrowAdapter(Context context, ArrayList<CategoryInfo> list, ArrayList<String> levelInfo){
         this.list = list;
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.levelInfo = levelInfo;
+        categoryCache = ((BSSApplication)context.getApplicationContext()).getCategoryCache();
     }
     
     @Override
@@ -52,6 +58,7 @@ public class ArrowAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        CategoryInfo info = list.get(position);
         if(null == convertView){
             convertView = inflater.inflate(R.layout.list_arrow, null);
             holder = new ViewHolder();
@@ -61,20 +68,37 @@ public class ArrowAdapter extends BaseAdapter {
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
-//            holder.image.getDrawable().setCallback(null);
+            holder.image.getDrawable().setCallback(null);
         }
-        CategoryInfo info = list.get(position);
         
-        holder.image.setImageDrawable(info.getDrawable(context));
-        holder.text.setText(info.getName());
-        holder.arrow.setOnClickListener(new ArrowClickListener(info.getName()));
+        CategoryObject categoryObject = categoryCache.getCategory(info.getKey());
+        if(null!=categoryObject){
+            holder.image.setImageDrawable(categoryObject.getDrawable());
+            holder.text.setText(categoryObject.getName());
+            holder.arrow.setOnClickListener(new ArrowClickListener(categoryObject.getName()));
+        }else{
+            holder.image.setImageDrawable(null);
+            holder.text.setText(null);
+            holder.arrow.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
     
-    private class ViewHolder{
+    private class ViewHolder implements Holder{
         ImageView image;
         TextView text;
         ImageView arrow;
+		@Override
+		public ImageView getImageView() {
+
+			return image;
+		}
+		@Override
+		public TextView getTextView() {
+
+			return text;
+		}
     }
     
     private class ArrowClickListener implements View.OnClickListener{

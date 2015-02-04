@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 import javax.security.auth.PrivateCredentialPermission;
 
+import com.hy.application.BSSApplication;
 import com.hy.basketballshoesshow.R;
 import com.hy.objects.CategoryInfo;
+import com.hy.objects.CategoryObject;
 import com.hy.objects.OnGetDrawableListener;
 import com.hy.services.GetPicService;
+import com.hy.tools.CategoryCache;
+import com.hy.tools.Holder;
 
 import android.app.Service;
 import android.content.Context;
@@ -25,11 +29,13 @@ public class CategoryAdapter extends BaseAdapter {
 	private ArrayList<CategoryInfo> list;
 	private LayoutInflater layInflater;
 	private Context context;
+	private CategoryCache categoryCache;
 	
 	public CategoryAdapter(Context context, ArrayList<CategoryInfo> list){
 		this.list = list;
 		layInflater = LayoutInflater.from(context);
 		this.context = context;
+		categoryCache = ((BSSApplication)context.getApplicationContext()).getCategoryCache();
 	}
 	
 //	public CategoryAdapter(Context context, ArrayList<CategoryInfo> list,GetPicService service){
@@ -73,29 +79,33 @@ public class CategoryAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 			if(null!=holder.image.getDrawable()){
 			    holder.image.getDrawable().setCallback(null);
-			    holder.image.setImageDrawable(null);
 			}
+		}
+		String key = info.getKey();
+		CategoryObject categoryObject = categoryCache.getCategory(info.getKey());
+		if(null!=categoryObject){
 			
-//			holder.image.setVisibility(View.GONE);
+			holder.image.setImageDrawable(categoryObject.getDrawable());
+			holder.text.setText(categoryObject.getName());
+		}else{
+			holder.image.setImageDrawable(null);
+			holder.text.setText(null);
 		}
 		
-		
-//		if(null!=info.getDrawable(context)){
-//		    holder.image.setImageDrawable(info.getDrawable(context)); 
-//		    holder.image.setVisibility(View.VISIBLE);
-//		}
-
-	            //holder.image.setImageDrawable(info.getDrawable(context)); 
-		//picService.getPic(info.getTabaleName(), info.getId(), holder.image);
-//	            holder.image.setVisibility(View.VISIBLE);
-
-		holder.text.setText(info.getName());
 		return convertView;
 	}
 	
-	public class ViewHolder{
+	public class ViewHolder implements Holder{
 		public ImageView image;
 		public TextView text;
+		@Override
+		public ImageView getImageView() {
+			return image;
+		}
+		@Override
+		public TextView getTextView() {
+			return text;
+		}
 	}
 
 }

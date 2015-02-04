@@ -1,8 +1,13 @@
 package com.hy.services;
 
+import java.util.jar.Attributes.Name;
+
 import com.hy.application.BSSApplication;
 import com.hy.database.DBAdapter;
+import com.hy.objects.CategoryObject;
 import com.hy.objects.OnGetDrawableListener;
+import com.hy.tools.CategoryCache;
+import com.hy.tools.Holder;
 
 import android.app.Service;
 import android.content.Intent;
@@ -20,8 +25,8 @@ public class GetPicService extends Service {
 
     private Handler serviceHandler;
     private Handler threadHandler;
-    private ImageView imageView;
     private DBAdapter dbAdapter;
+    private CategoryCache categoryCache;
     @Override
     public IBinder onBind(Intent arg0) {
 
@@ -38,21 +43,27 @@ public class GetPicService extends Service {
     public void onCreate() {
         super.onCreate();
         serviceHandler = new Handler(){
-
+        	Holder holder;
+        	String key;
+        	CategoryObject object;
             @Override
             public void handleMessage(Message msg) {
                 Object[] infos = (Object[])msg.obj;
-                imageView = (ImageView)infos[2];
+                key = (String)infos[0];
+                object = (CategoryObject)infos[1];
+                holder = (Holder)infos[2];
                 if(null!=infos[1]){
-                    imageView.setImageDrawable((Drawable)infos[1]);
-                    imageView.setVisibility(View.VISIBLE);
+                	categoryCache.cacheCategory(key, object);
+                    holder.getImageView().setImageDrawable(object.getDrawable());
+                    holder.getTextView().setText(object.getName());
                 }else{
-                    imageView.setVisibility(View.GONE);
+//                    imageView.setVisibility(View.GONE);
                 }
             }
             
         };
         dbAdapter = ((BSSApplication)getApplication()).getdDbAdapter();
+        categoryCache = ((BSSApplication)getApplication()).getCategoryCache();
         GetPicThread getPicThread = new GetPicThread();
         getPicThread.start();
     }
@@ -63,17 +74,20 @@ public class GetPicService extends Service {
         
     }
 
-    public void getPic(String tableName,int pic_id,ImageView imageView){
+    public void getPic(String tableName,int pic_id,Holder holder){
         Message msg = Message.obtain(); 
-        msg.what = imageView.hashCode();
-        Object[] infos = {tableName,pic_id,imageView};
+//        msg.what = imageView.hashCode();
+        Object[] infos = {tableName,pic_id,holder};
         msg.obj = infos;
         threadHandler.sendMessage(msg);
     }
     
     private class GetPicThread extends Thread{
-        Drawable drawable;
+        CategoryObject object;
         Message message;
+        String tableName;
+        int id;
+        String key;
         @Override
         public void run() {
             Looper.prepare();
@@ -84,9 +98,13 @@ public class GetPicService extends Service {
                 public void handleMessage(Message msg) {
                     
                     Object[] infos = (Object[])msg.obj;
-                    drawable = dbAdapter.getDrawable((String)infos[0], (Integer)infos[1]);
+                    tableName = (String)infos[0];
+                    id = (Integer)infos[1];
+                    object = dbAdapter.getCategoryObject(tableName, id);
                     message = Message.obtain();
-                    infos[1] = drawable;
+                    key = tableName + id;
+                    infos[0] = key;
+                    infos[1] = object;
                     message.obj = infos;
                     serviceHandler.sendMessage(message);
                 }

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.hy.application.BSSApplication;
 import com.hy.basketballshoesshow.R;
 import com.hy.objects.CategoryInfo;
+import com.hy.objects.CategoryObject;
+import com.hy.tools.CategoryCache;
+import com.hy.tools.Holder;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -23,6 +26,7 @@ public class GridAdapter extends BaseAdapter {
     private int pic_width ;
     private int pic_height;
     private Context context;
+    private CategoryCache categoryCache;
     
     public GridAdapter(Context context, ArrayList<CategoryInfo> list){
         this.list = list;
@@ -30,6 +34,7 @@ public class GridAdapter extends BaseAdapter {
 //        pic_width = getPicWidth(context);
 //        pic_height = getPicHeight(context);
         this.context = context;
+        categoryCache = ((BSSApplication)context.getApplicationContext()).getCategoryCache();
     }
     @Override
     public int getCount() {
@@ -52,6 +57,7 @@ public class GridAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        CategoryInfo info = list.get(position);
         if(null==convertView){
             convertView = inflater.inflate(R.layout.gridviewitem, null);
             holder = new ViewHolder();
@@ -61,20 +67,35 @@ public class GridAdapter extends BaseAdapter {
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
-//            holder.imageView.getDrawable().setCallback(null);
+            holder.imageView.getDrawable().setCallback(null);
         }
-        CategoryInfo info = list.get(position);
-        //holder.relativeLayout.setLayoutParams(new LayoutParams(pic_width, pic_height));
-        holder.imageView.setImageDrawable(info.getDrawable(context));
-        holder.textView.setText(info.getName());
+        CategoryObject categoryObject = categoryCache.getCategory(info.getKey());
+        if(null!=categoryObject){
+            holder.imageView.setImageDrawable(categoryObject.getDrawable());
+            holder.textView.setText(categoryObject.getName());
+        }else{
+            holder.imageView.setImageDrawable(null);
+            holder.textView.setText(null);
+        }
+
         
         return convertView;
     }
     
-    private class ViewHolder{
+    private class ViewHolder implements Holder{
         RelativeLayout relativeLayout;
         ImageView imageView;
         TextView textView;
+		@Override
+		public ImageView getImageView() {
+
+			return imageView;
+		}
+		@Override
+		public TextView getTextView() {
+
+			return textView;
+		}
     }
 
     
