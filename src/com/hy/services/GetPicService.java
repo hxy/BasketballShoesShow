@@ -56,6 +56,7 @@ public class GetPicService extends Service {
                 	categoryCache.cacheCategory(key, object);
                     holder.getImageView().setImageDrawable(object.getDrawable());
                     holder.getTextView().setText(object.getName());
+//                    holder.getImageView().setVisibility(View.VISIBLE);
                 }else{
 //                    imageView.setVisibility(View.GONE);
                 }

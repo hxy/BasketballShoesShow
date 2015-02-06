@@ -149,7 +149,7 @@ public class DBAdapter {
 	
 	public ArrayList<CategoryInfo> getGenerationList(String brand,String series){
 	        db = dbHelper.getReadableDatabase();
-	        Cursor cursor = db.query("generation", new String[]{"generation","_id"}, "brand_name=? and series_name=?", new String[]{brand,series}, null, null, null);
+	        Cursor cursor = db.query("generation", new String[]{"generation_name","_id"}, "brand_name=? and series_name=?", new String[]{brand,series}, null, null, null);
 //	        String  name;
 	        int id;
 //	        byte[] bitmapBytes = null;
@@ -166,7 +166,7 @@ public class DBAdapter {
 	
 	   public ArrayList<CategoryInfo> getColorList(String brand,String series,String generation){
            db = dbHelper.getReadableDatabase();
-           Cursor cursor = db.query("color", new String[]{"color","_id"}, "brand_name=? and series_name=? and generation = ?", new String[]{brand,series,generation}, null, null, null);
+           Cursor cursor = db.query("color", new String[]{"color_name","_id"}, "brand_name=? and series_name=? and generation_name = ?", new String[]{brand,series,generation}, null, null, null);
 //           String  name;
 //           byte[] bitmapBytes;
            int id;
@@ -183,7 +183,7 @@ public class DBAdapter {
 	   
 	   public ArrayList<CategoryInfo> getColorList(String brand,String series){
 	           db = dbHelper.getReadableDatabase();
-	           Cursor cursor = db.query("color", new String[]{"color","_id"}, "brand_name=? and series_name=?", new String[]{brand,series}, null, null, null);
+	           Cursor cursor = db.query("color", new String[]{"color_name","_id"}, "brand_name=? and series_name=?", new String[]{brand,series}, null, null, null);
 //	           String  name;
 //	           byte[] bitmapBytes;
 	           int id;
@@ -200,7 +200,7 @@ public class DBAdapter {
 	   
        public ArrayList<CategoryInfo> getShoesList(String brand,String series,String generation,String color){
            db = dbHelper.getReadableDatabase();
-           Cursor cursor = db.query("shoes", new String[]{"shoes_name","_id"}, "brand_name=? and series_name=? and generation = ? and color = ?", new String[]{brand,series,generation,color}, null, null, null);
+           Cursor cursor = db.query("shoes", new String[]{"shoes_name","_id"}, "brand_name=? and series_name=? and generation_name = ? and color_name = ?", new String[]{brand,series,generation,color}, null, null, null);
 //           String  name;
 //           byte[] bitmapBytes;
            int id;
@@ -217,7 +217,7 @@ public class DBAdapter {
        
        public ArrayList<CategoryInfo> getShoesList(String brand,String series,String color){
            db = dbHelper.getReadableDatabase();
-           Cursor cursor = db.query("shoes", new String[]{"shoes_name","_id"}, "brand_name=? and series_name=? and color = ?", new String[]{brand,series,color}, null, null, null);
+           Cursor cursor = db.query("shoes", new String[]{"shoes_name","_id"}, "brand_name=? and series_name=? and color_name = ?", new String[]{brand,series,color}, null, null, null);
 //           String  name;
 //           byte[] bitmapBytes;
            int id;

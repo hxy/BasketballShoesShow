@@ -1,5 +1,7 @@
 package com.hy.database;
 
+import java.io.File;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -65,7 +67,7 @@ public class DBHelper extends SQLiteOpenHelper {
     	if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
     		path = Environment.getExternalStorageDirectory().getPath();
     	}else {
-    		path = Environment.getDataDirectory().getPath();
+    		path = Environment.getDataDirectory().getPath()+File.separator + "data"+File.separator+"com.hy.basketballshoesshow";
 		}
     	
         return path;

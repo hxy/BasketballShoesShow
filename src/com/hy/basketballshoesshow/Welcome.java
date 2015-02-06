@@ -27,7 +27,7 @@ public class Welcome extends Activity {
             @Override
             public void run() {
                 try {
-                    this.sleep(5000);
+                    this.sleep(3000);
                     Welcome.this.startActivity(new Intent(Welcome.this, MainActivity.class));
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block

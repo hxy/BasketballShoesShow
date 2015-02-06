@@ -3,23 +3,28 @@ package com.hy.basketballshoesshow;
 import java.util.ArrayList;
 
 import com.hy.adapter.ArrowAdapter;
+import com.hy.adapter.CategoryAdapter;
 import com.hy.application.BSSApplication;
 import com.hy.database.DBAdapter;
 import com.hy.objects.CategoryInfo;
 import com.hy.services.GetPicService;
 import com.hy.tools.CategoryCache;
+import com.hy.tools.Holder;
+import com.hy.tools.StopScrollAddList;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class SeriesListActivity extends Activity {
 
-    private ListView seriesListView;
+    private StopScrollAddList seriesListView;
     private ArrowAdapter seriesAdapter;
     private ArrayList<String> levelInfo;
     private GetPicService picService;
@@ -30,7 +35,12 @@ public class SeriesListActivity extends Activity {
         picService = ((BSSApplication)getApplication()).getService();
         categoryCache = ((BSSApplication)getApplication()).getCategoryCache();
         setContentView(R.layout.activity_category);
-        seriesListView = (ListView)findViewById(R.id.list);
+        seriesListView = (StopScrollAddList)findViewById(R.id.list);
+        
+        seriesListView.setService(picService);
+        seriesListView.SetCategoryCache(categoryCache);
+        seriesListView.setScrollListener();
+        
         levelInfo = getIntent().getStringArrayListExtra("levelInfo");
         ArrayList<CategoryInfo> seriesList = ((BSSApplication)getApplication()).getdDbAdapter().getSeriesList(levelInfo.get(0));
         if(0!=seriesList.size()){
@@ -41,7 +51,7 @@ public class SeriesListActivity extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1,
                         int arg2, long arg3) {
-                    String seriesName = categoryCache.getCategory(((CategoryInfo)(seriesAdapter.getItem(arg2))).getKey()).getName();
+                    String seriesName = ((Holder)(arg1.getTag())).getTextView().getText().toString();
                     levelInfo.add(seriesName);
                     Intent intent = new Intent(SeriesListActivity.this,GenerationListActivity.class);
                     intent.putExtra("levelInfo", levelInfo);
@@ -49,6 +59,7 @@ public class SeriesListActivity extends Activity {
                     levelInfo.remove(levelInfo.size()-1);
                 }
             });
+            
         }
         
     }

@@ -11,6 +11,7 @@ import com.hy.basketballshoesshow.R;
 import com.hy.database.DBAdapter;
 import com.hy.objects.Brand;
 import com.hy.objects.CategoryInfo;
+import com.hy.objects.CategoryObject;
 import com.hy.objects.Color;
 import com.hy.objects.Generation;
 import com.hy.objects.Series;
@@ -18,6 +19,8 @@ import com.hy.objects.Shoes;
 import com.hy.services.GetPicService;
 import com.hy.services.GetPicService.PicBinder;
 import com.hy.tools.CategoryCache;
+import com.hy.tools.Holder;
+import com.hy.tools.StopScrollAddList;
 
 import android.os.Bundle;
 import android.os.IBinder;
@@ -34,12 +37,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	private DBAdapter dbAdapter;
-	private ListView brandList;
+	private StopScrollAddList brandList;
 	private CategoryAdapter adapter;
 	private GetPicService picService;
 	private CategoryCache categoryCache;
@@ -50,7 +54,13 @@ public class MainActivity extends Activity {
         picService = ((BSSApplication)getApplication()).getService();
         categoryCache = ((BSSApplication)getApplication()).getCategoryCache();
         setContentView(R.layout.activity_category);
-        brandList = (ListView)findViewById(R.id.list);
+        brandList = (StopScrollAddList)findViewById(R.id.list);
+        
+        
+        brandList.setService(picService);
+        brandList.SetCategoryCache(categoryCache);
+        brandList.setScrollListener();
+        
         adapter = new CategoryAdapter(this, dbAdapter.getBrandsList());
         brandList.setAdapter(adapter);
         brandList.setOnItemClickListener(new OnItemClickListener() {
@@ -59,7 +69,8 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                     long arg3) {
                 ArrayList<String> levelInfo = new ArrayList<String>();
-                String brandName = categoryCache.getCategory(((CategoryInfo)(adapter.getItem(arg2))).getKey()).getName();
+//                String brandName = categoryCache.getCategory(((CategoryInfo)(adapter.getItem(arg2))).getKey()).getName();
+                String brandName = ((Holder)(arg1.getTag())).getTextView().getText().toString();
                 levelInfo.add(brandName);
                 Intent intent = new Intent(MainActivity.this,SeriesListActivity.class);
                 intent.putExtra("levelInfo", levelInfo);
@@ -67,51 +78,38 @@ public class MainActivity extends Activity {
             }
         });
         
-        brandList.setOnScrollListener(new OnScrollListener(){
-
-            private int firstIndex;
-            private int endIndex;
-            private int viewIndex;
-            private CategoryAdapter.ViewHolder holder;
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                    int visibleItemCount, int totalItemCount) {
-                firstIndex = firstVisibleItem;
-                endIndex = firstVisibleItem+visibleItemCount-1;
-                
-            }
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
-                    for(int n = firstIndex; n <= endIndex; n++){
-                        viewIndex = n-firstIndex;
-                        CategoryInfo info = (CategoryInfo)adapter.getItem(n);
-                        String key = info.getKey();
-                        if(null==categoryCache.getCategory(info.getKey())){
-                        	holder = (CategoryAdapter.ViewHolder)(brandList.getChildAt(viewIndex).getTag());
-                            picService.getPic(info.getTabaleName(), info.getId(), holder);
-                        }
-                    }
-                }
-            }
-            
-        });
+//        brandList.setOnScrollListener(new OnScrollListener(){
+//
+//            private int firstIndex;
+//            private int endIndex;
+//            private int viewIndex;
+//            private CategoryAdapter.ViewHolder holder;
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem,
+//                    int visibleItemCount, int totalItemCount) {
+//                firstIndex = firstVisibleItem;
+//                endIndex = firstVisibleItem+visibleItemCount-1;
+//                
+//            }
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
+//                    for(int n = firstIndex; n <= endIndex; n++){
+//                        viewIndex = n-firstIndex;
+//                        CategoryInfo info = (CategoryInfo)adapter.getItem(n);
+//                        String key = info.getKey();
+//                        if(null==categoryCache.getCategory(info.getKey())){
+//                        	holder = (CategoryAdapter.ViewHolder)(brandList.getChildAt(viewIndex).getTag());
+//                            picService.getPic(info.getTabaleName(), info.getId(), holder);
+//                        }
+//                    }
+//                }
+//            }
+//            
+//        });
         
     }
-    
-    
-
-    @SuppressLint("NewApi")
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        brandList.setScrollY(25);
-//        brandList.setSelection(10);
-        
-    }
-
-
 
     private byte[] getPicBytes(InputStream inputStream){
     	int length = -1;

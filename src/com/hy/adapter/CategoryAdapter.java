@@ -74,7 +74,7 @@ public class CategoryAdapter extends BaseAdapter {
 			holder.image = (ImageView)convertView.findViewById(R.id.img);
 			holder.text = (TextView)convertView.findViewById(R.id.name);
 			convertView.setTag(holder);
-			//picService.getPic(info.getTabaleName(), info.getId(), holder.image);
+			((BSSApplication)context.getApplicationContext()).getService().getPic(info.getTabaleName(), info.getId(), holder);
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 			if(null!=holder.image.getDrawable()){
@@ -95,7 +95,7 @@ public class CategoryAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
-	public class ViewHolder implements Holder{
+	private class ViewHolder implements Holder{
 		public ImageView image;
 		public TextView text;
 		@Override

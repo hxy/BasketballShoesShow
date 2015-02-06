@@ -66,9 +66,12 @@ public class ArrowAdapter extends BaseAdapter {
             holder.text = (TextView)convertView.findViewById(R.id.list_arrow_name);
             holder.arrow = (ImageView)convertView.findViewById(R.id.list_arrow_arrow);
             convertView.setTag(holder);
+            ((BSSApplication)context.getApplicationContext()).getService().getPic(info.getTabaleName(), info.getId(), holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
-            holder.image.getDrawable().setCallback(null);
+            if(null!=holder.image.getDrawable()){
+                holder.image.getDrawable().setCallback(null);
+            }
         }
         
         CategoryObject categoryObject = categoryCache.getCategory(info.getKey());
