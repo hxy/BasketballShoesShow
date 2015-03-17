@@ -34,6 +34,7 @@ public class DBAdapter {
 
 //        db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("server_id", brand.getServerId());
         values.put("brand_name", brand.getName());
         values.put("brand_pic", brand.getBitmapBytes());
         long row = writableDB.insert("brand", null, values);
@@ -45,6 +46,7 @@ public class DBAdapter {
 
 //        db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("server_id", series.getServerId());
         values.put("brand_name", series.getBrandName());
         values.put("series_name", series.getName());
         values.put("series_pic", series.getBitmapBytes());
@@ -58,6 +60,7 @@ public class DBAdapter {
 
 //        db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("server_id", generation.getServerId());
         values.put("brand_name", generation.getBrandName());
         values.put("series_name", generation.getSeriesName());
         values.put("generation_name", generation.getName());
@@ -71,6 +74,7 @@ public class DBAdapter {
 
 //        db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("server_id", color.getServerId());
         values.put("brand_name", color.getBrandName());
         values.put("series_name", color.getSeriesName());
         values.put("generation_name", color.getGeneration());
@@ -85,6 +89,7 @@ public class DBAdapter {
 
 //        db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("server_id", shoes.getServerId());
         values.put("brand_name", shoes.getBrand());
         values.put("series_name", shoes.getSeries());
         values.put("generation_name", shoes.getGeneration());
@@ -265,6 +270,7 @@ public class DBAdapter {
         Cursor cursor = readableDB.rawQuery("select * from shoes where _id=?",new String[] { String.valueOf(id) });
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
+            int serverId = cursor.getInt(cursor.getColumnIndex("server_id"));
             String brand = cursor.getString(cursor.getColumnIndex("brand_name"));
             String series = cursor.getString(cursor.getColumnIndex("series_name"));
             // if(-1!=cursor.getColumnIndex("generation_name")){
@@ -284,7 +290,7 @@ public class DBAdapter {
             String sex = cursor.getString(cursor.getColumnIndex("shoes_sex"));
             String technology = cursor.getString(cursor.getColumnIndex("shoes_technology"));
             String indro = cursor.getString(cursor.getColumnIndex("shoes_indro"));
-            shoes = new Shoes(brand, series, generation, color, shoesName, pic,
+            shoes = new Shoes(serverId,brand, series, generation, color, shoesName, pic,
                     price, season, upper, upperMaterial, lowMaterial, function,
                     position, sex, technology, indro);
         }
@@ -313,15 +319,20 @@ public class DBAdapter {
 
     }
     
-    public int getStartProsition(int category){
+    public int getStartServerId(int category,ArrayList<String> levelInfo){
         String sql = null;
 //        db = dbHelper.getReadableDatabase();
         switch(category){
-        case 1: sql = "select count(*) from brand";break;
-        case 2: sql = "select count(*) from series";break;
-        case 3: sql = "select count(*) from generation";break;
-        case 4: sql = "select count(*) from color";break;
-        case 5: sql = "select count(*) from shoes";break;
+        case 1: sql = "select max(server_id) from brand";break;
+        case 2: sql = "select max(server_id) from series where brand_name='"+levelInfo.get(0)+"'";break;
+        case 3: sql = "select max(server_id) from generation where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"'";break;
+        case 4: if(2==levelInfo.size()){
+            sql = "select max(server_id) from color where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"'";break;
+                }else {
+                    sql = "select max(server_id) from color where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"' and generation_name='"+levelInfo.get(2)+"'";break;
+                }
+            
+        case 5: sql = "select max(server_id) from shoes where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"' and generation_name='"+levelInfo.get(2)+"' and color_name="+levelInfo.get(3)+"'";break;
         }
         Cursor cursor = readableDB.rawQuery(sql, null);
         cursor.moveToFirst();

@@ -123,7 +123,7 @@ public class SeriesListActivity extends Activity {
 
     private void getSeriesFromServer(int model){
         int SERIES = 2;
-        int startposition = dbAdapter.getStartProsition(SERIES);
-        dataService.getDataFromServer("series", startposition,mainHandler,model);
+        int startServerId = dbAdapter.getStartServerId(SERIES, levelInfo);
+        dataService.getDataFromServer("series",levelInfo ,startServerId,mainHandler,model);
     }
 }

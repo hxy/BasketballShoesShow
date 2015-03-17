@@ -158,8 +158,8 @@ public class ShoesListActivity extends Activity {
 
     private void getShoesFromServer(int model){
         int SHOES = 5;
-        int startposition = dbAdapter.getStartProsition(SHOES);
-        dataService.getDataFromServer("shoes", startposition,mainHandler,model);
+        int startServerId = dbAdapter.getStartServerId(SHOES, levelInfo);
+        dataService.getDataFromServer("shoes", levelInfo,startServerId,mainHandler,model);
     }
     
     private ArrayList<CategoryInfo> getShoesList(ArrayList<String> levelInfo){

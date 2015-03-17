@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 
 public class Shoes {
 
+    private int serverId;
 	private String brand;
 	private String series;
 	private String generation;
@@ -23,10 +24,11 @@ public class Shoes {
 	private String technology;
 	private String indro;
 	
-	public Shoes(String brand,String serise,String generation,String color,String name,
+	public Shoes(int serverId,String brand,String serise,String generation,String color,String name,
 			byte[] bitmapBytes, int price,String season,String upper,String upperMaterial,
 			String lowMaterial,String function,String position,String sex,String technology,
 			String indro){
+	    this.serverId = serverId;
 		this.brand = brand;
 		this.series = serise;
 		this.generation = generation;
@@ -112,5 +114,8 @@ public class Shoes {
 	public Drawable getDrawable(){
 	    return Drawable.createFromStream(new ByteArrayInputStream(bitmapBytes), null);
 	}
+    public int getServerId(){
+        return serverId;
+    }
 	
 }

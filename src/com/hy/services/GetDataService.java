@@ -158,20 +158,22 @@ public class GetDataService extends Service {
     
     //----------------------------------------------------------------------
     
-    public void getDataFromServer(String category, int startPosition,Handler activityHandler,int model){
+    public void getDataFromServer(String category,ArrayList<String> levelInfo, int startServerId,Handler activityHandler,int model){
         this.activityHandler = activityHandler;
         Message msg = Message.obtain(); 
         msg.arg1 = model;
         Bundle bundle = new Bundle();
         bundle.putString("category", category);
-        bundle.putInt("startPosition", startPosition);
+        bundle.putInt("startServerId", startServerId);
+        bundle.putStringArrayList("levelInfo", levelInfo);
         msg.setData(bundle);
         dataThreadHandler.sendMessage(msg);
     }
     
     private class GetDataThread extends Thread{
         String category = null;
-        int startPosition = 0;
+        int startServerId = 0;
+        ArrayList<String> levelInfo;
         int count =0;
         Message message;
         @Override
@@ -182,8 +184,9 @@ public class GetDataService extends Service {
                 @Override
                 public void handleMessage(Message msg) {
                     category = msg.getData().getString("category");
-                    startPosition = msg.getData().getInt("startPosition");
-                    count = getDataListAndInsertToDB(category, startPosition);
+                    startServerId = msg.getData().getInt("startServerId");
+                    levelInfo = msg.getData().getStringArrayList("levelInfo");
+                    count = getDataListAndInsertToDB(category,levelInfo,startServerId);
                     if(count == NOMORE){
                         activityHandler.sendEmptyMessage(NOMORE);
                     }else if (count == ERROR) {
@@ -203,19 +206,19 @@ public class GetDataService extends Service {
     }
     
     
-    private int getDataListAndInsertToDB(String category, int startPosition){
+    private int getDataListAndInsertToDB(String category,ArrayList<String> levelInfo, int startServerId){
         String urlPath = null;
         int count = 0;
         if("brand".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Brand.jsp?startposition="+startPosition;
+            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Brand.jsp?startServerId="+startServerId;
         }else if("series".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Series.jsp?startposition="+startPosition;
+            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Series.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0);
         }else if("generation".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Generation.jsp?startposition="+startPosition;
+            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Generation.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1);
         }else if("color".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Color.jsp?startposition="+startPosition;
+            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Color.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1)+"&generationName="+levelInfo.get(2);
         }else if("shoes".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Shoes.jsp?startposition="+startPosition;
+            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Shoes.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1)+"&generationName="+levelInfo.get(2)+"&colorName="+levelInfo.get(3);
         }
         
         try {
@@ -252,47 +255,52 @@ public class GetDataService extends Service {
         byte[] picBytes = null;  
 //        BASE64Decoder decoder = new BASE64Decoder();  
         if("brand".equals(category)){
+            int serverId = jsonObject.getInt("serverId");
             String brandName = jsonObject.getString("brandName");
             String brandPic = jsonObject.getString("brandPic");
             picBytes = Base64.decode(brandPic, Base64.DEFAULT);
-            Brand brand = new Brand(brandName, picBytes);
+            Brand brand = new Brand(serverId,brandName, picBytes);
             if(-1 != dbAdapter.insertBrand(brand)){
                 return 1;
             }
 
         }else if("series".equals(category)){
+            int serverId = jsonObject.getInt("serverId");
             String brandName = jsonObject.getString("brandName");
             String seriesName = jsonObject.getString("seriesName");
             String seriesIndro = jsonObject.getString("seriesIndro");
             String seriesPic = jsonObject.getString("seriesPic");
             picBytes = Base64.decode(seriesPic, Base64.DEFAULT);
-            Series series = new Series(brandName, seriesName, picBytes, seriesIndro);
+            Series series = new Series(serverId,brandName, seriesName, picBytes, seriesIndro);
             if(-1!=dbAdapter.insertSeries(series)){
                 return 1;
             }
         }else if("generation".equals(category)){
+            int serverId = jsonObject.getInt("serverId");
             String brandName = jsonObject.getString("brandName");
             String seriesName = jsonObject.getString("seriesName");
             String generationName = jsonObject.getString("generationName");
             String generationPic = jsonObject.getString("generationPic");
             picBytes = Base64.decode(generationPic, Base64.DEFAULT);
-            Generation generation = new Generation(brandName, seriesName, generationName,picBytes);
+            Generation generation = new Generation(serverId,brandName, seriesName, generationName,picBytes);
             if(-1!=dbAdapter.insertGeneration(generation)){
                 return 1;
             }
         }else if ("color".equals(category)) {
+            int serverId = jsonObject.getInt("serverId");
             String brandName = jsonObject.getString("brandName");
             String seriesName = jsonObject.getString("seriesName");
             String generationName = jsonObject.getString("generationName");
             String colorName = jsonObject.getString("colorName");
             String colorPic = jsonObject.getString("colorPic");
             picBytes = Base64.decode(colorPic, Base64.DEFAULT);
-            Color color = new Color(brandName, seriesName, generationName,colorName,picBytes);
+            Color color = new Color(serverId,brandName, seriesName, generationName,colorName,picBytes);
             if(-1!=dbAdapter.insertColor(color)){
                 return 1;
             }
             
         }else if ("shoes".equals(category)) {
+            int serverId = jsonObject.getInt("serverId");
             String brandName = jsonObject.getString("brandName");
             String seriesName = jsonObject.getString("seriesName");
             String generationName = jsonObject.getString("generationName");
@@ -310,7 +318,7 @@ public class GetDataService extends Service {
             String shoesSex = jsonObject.getString("shoesSex");
             String shoesTechnology = jsonObject.getString("shoesTechnology");
             String shoesIndro = jsonObject.getString("shoesIndro");
-            Shoes shoes = new Shoes(brandName, seriesName, generationName, colorName, shoesName, picBytes, shoesPrice, shoesSeason, shoesUpper, shoesUpperMaterial, shoesLowMaterial, shoesFunction, shoesPosition, shoesSex, shoesTechnology, shoesIndro);
+            Shoes shoes = new Shoes(serverId,brandName, seriesName, generationName, colorName, shoesName, picBytes, shoesPrice, shoesSeason, shoesUpper, shoesUpperMaterial, shoesLowMaterial, shoesFunction, shoesPosition, shoesSex, shoesTechnology, shoesIndro);
             if(-1!=dbAdapter.insertShoes(shoes)){
                 return 1;
             }

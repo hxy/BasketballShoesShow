@@ -1,11 +1,15 @@
 package com.hy.objects;
 
+import android.R.integer;
+
 public class Brand {
 
 	private String name;
 	private byte[] bitmapBytes;
+	private int serverId;
 	
-	public Brand(String name, byte[] bitmapBytes){
+	public Brand(int serverId,String name, byte[] bitmapBytes){
+	    this.serverId = serverId;
 		this.name = name;
 		this.bitmapBytes = bitmapBytes;
 	}
@@ -16,5 +20,9 @@ public class Brand {
 
 	public byte[] getBitmapBytes() {
 		return bitmapBytes;
+	}
+	
+	public int getServerId(){
+	    return serverId;
 	}
 }

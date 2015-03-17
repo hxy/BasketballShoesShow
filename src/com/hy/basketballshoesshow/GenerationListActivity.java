@@ -122,7 +122,7 @@ public class GenerationListActivity extends Activity {
     
     private void getGenerationFromServer(int model){
         int GENERATION = 3;
-        int startposition = dbAdapter.getStartProsition(GENERATION);
-        dataService.getDataFromServer("generation", startposition,mainHandler,model);
+        int startServerId = dbAdapter.getStartServerId(GENERATION, levelInfo);
+        dataService.getDataFromServer("generation", levelInfo,startServerId,mainHandler,model);
     }
 }

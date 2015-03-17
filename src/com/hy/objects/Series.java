@@ -2,12 +2,14 @@ package com.hy.objects;
 
 public class Series {
 
+    private int serverId;
 	private String brandName;
 	private String name;
 	private String indro;
 	private byte[] bitmapBytes;
 	
-	public Series(String brandName,String name,byte[]bitmapBytes,String indro){
+	public Series(int serverId,String brandName,String name,byte[]bitmapBytes,String indro){
+	    this.serverId = serverId;
 		this.brandName = brandName;
 		this.name = name;
 		this.bitmapBytes = bitmapBytes;
@@ -29,5 +31,9 @@ public class Series {
 	public String getIndro(){
 		return indro;
 	}
+	
+    public int getServerId(){
+        return serverId;
+    }
 	
 }

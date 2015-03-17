@@ -13,25 +13,29 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String BRANDTABLE_CREATE =   
             "create table brand( " +
             "_id integer primary key autoincrement, " +   
+            "server_id integer," +   
             "brand_name text , " +
             "brand_pic blob);"; 
     static final String SERIESTABLE_CREATE =   
             "create table series( " +
-            "_id integer primary key autoincrement, " +  
+            "_id integer primary key autoincrement, " +
+            "server_id integer," + 
             "brand_name text, " +
             "series_name text, " +
             "series_indro text, " +
             "series_pic blob);"; 
     static final String GENERATIONTABLE_CREATE =   
             "create table generation( " +
-            "_id integer primary key autoincrement, " +   
+            "_id integer primary key autoincrement, " + 
+            "server_id integer," + 
             "brand_name text, " +
             "series_name text, " +
             "generation_name text," +
             "generation_pic blob)"; 
     static final String COLORTABLE_CREATE =   
             "create table color( " +
-            "_id integer primary key autoincrement, " +   
+            "_id integer primary key autoincrement, " +  
+            "server_id integer," + 
             "brand_name text, " +
             "series_name text, " +
             "generation_name text," +
@@ -39,7 +43,8 @@ public class DBHelper extends SQLiteOpenHelper {
             "color_pic blob);"; 
     static final String SHOESTABLE_CREATE =   
             "create table shoes( " +
-            "_id integer primary key autoincrement, " +   
+            "_id integer primary key autoincrement, " +  
+            "server_id integer," + 
             "brand_name text, " +
             "series_name text, " +
             "generation_name text," +

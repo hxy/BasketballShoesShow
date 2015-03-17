@@ -116,8 +116,8 @@ public class ColorListActivity extends Activity {
     
     private void getColorFromServer(int model){
         int COLOR = 4;
-        int startposition = dbAdapter.getStartProsition(COLOR);
-        dataService.getDataFromServer("color", startposition,mainHandler,model);
+        int startServerId = dbAdapter.getStartServerId(COLOR, levelInfo);
+        dataService.getDataFromServer("color",levelInfo,startServerId,mainHandler,model);
     }
 
     private ArrayList<CategoryInfo> getColorList(ArrayList<String> levelInfo){

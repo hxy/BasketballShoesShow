@@ -2,13 +2,15 @@ package com.hy.objects;
 
 public class Color {
 
+    private int serverId;
 	private String brandName;
 	private String seriesName;
 	private String generation;
 	private String name;
 	private byte[] bitmapBytes;
 	
-	public Color(String brandName,String seriesName,String generation,String name,byte[]bitmapBytes){
+	public Color(int serverId,String brandName,String seriesName,String generation,String name,byte[]bitmapBytes){
+	    this.serverId = serverId;
 		this.brandName = brandName;
 		this.seriesName = seriesName;
 		this.generation = generation;
@@ -16,7 +18,8 @@ public class Color {
 		this.bitmapBytes = bitmapBytes;
 	}
 	
-	public Color(String brandName,String seriesName,String name,byte[]bitmapBytes){
+	public Color(int serverId,String brandName,String seriesName,String name,byte[]bitmapBytes){
+	        this.serverId = serverId;
 	        this.brandName = brandName;
 	        this.seriesName = seriesName;
 	        this.generation = null;
@@ -42,5 +45,8 @@ public class Color {
 
 	public byte[] getBitmapBytes() {
 		return bitmapBytes;
+	}
+	public int getServerId(){
+	    return serverId;
 	}
 }

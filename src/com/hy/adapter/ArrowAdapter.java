@@ -79,7 +79,7 @@ public class ArrowAdapter extends BaseAdapter implements GetSetList{
             holder.image.setImageDrawable(categoryObject.getDrawable());
             holder.text.setText(categoryObject.getName());
             holder.arrow.setOnClickListener(new ArrowClickListener(categoryObject.getName()));
-//            holder.arrow.setVisibility(View.VISIBLE);
+            holder.arrow.setVisibility(View.VISIBLE);
         }else{
             holder.image.setImageDrawable(null);
             holder.text.setText(null);
