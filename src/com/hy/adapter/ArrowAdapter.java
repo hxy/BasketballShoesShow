@@ -21,7 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ArrowAdapter extends BaseAdapter {
+public class ArrowAdapter extends BaseAdapter implements GetSetList{
 
     private ArrayList<CategoryInfo> list;
     private LayoutInflater inflater;
@@ -66,7 +66,7 @@ public class ArrowAdapter extends BaseAdapter {
             holder.text = (TextView)convertView.findViewById(R.id.list_arrow_name);
             holder.arrow = (ImageView)convertView.findViewById(R.id.list_arrow_arrow);
             convertView.setTag(holder);
-            ((BSSApplication)context.getApplicationContext()).getService().getPic(info.getTabaleName(), info.getId(), holder);
+            ((BSSApplication)context.getApplicationContext()).getPicService().getPic(info.getTabaleName(), info.getId(), holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
             if(null!=holder.image.getDrawable()){
@@ -79,6 +79,7 @@ public class ArrowAdapter extends BaseAdapter {
             holder.image.setImageDrawable(categoryObject.getDrawable());
             holder.text.setText(categoryObject.getName());
             holder.arrow.setOnClickListener(new ArrowClickListener(categoryObject.getName()));
+//            holder.arrow.setVisibility(View.VISIBLE);
         }else{
             holder.image.setImageDrawable(null);
             holder.text.setText(null);
@@ -102,9 +103,19 @@ public class ArrowAdapter extends BaseAdapter {
 
 			return text;
 		}
+        @Override
+        public ImageView getArrowView() {
+
+            return arrow;
+        }
+        @Override
+        public BaseAdapter getAdapter() {
+            
+            return ArrowAdapter.this;
+        }
     }
     
-    private class ArrowClickListener implements View.OnClickListener{
+    public class ArrowClickListener implements View.OnClickListener{
         private String name;
         public ArrowClickListener(String name){
             this.name = name;
@@ -118,6 +129,17 @@ public class ArrowAdapter extends BaseAdapter {
             levelInfo.remove(levelInfo.size()-1);
         }
         
+    }
+
+    @Override
+    public ArrayList<CategoryInfo> getList() {
+        
+        return this.list;
+    }
+
+    @Override
+    public void setList(ArrayList<CategoryInfo> list) {
+       this.list = list;
     }
 
 }

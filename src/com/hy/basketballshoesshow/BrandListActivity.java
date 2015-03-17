@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import com.baoyz.widget.PullRefreshLayout;
+import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
 import com.hy.adapter.CategoryAdapter;
 import com.hy.application.BSSApplication;
 import com.hy.basketballshoesshow.R;
@@ -16,14 +18,18 @@ import com.hy.objects.Color;
 import com.hy.objects.Generation;
 import com.hy.objects.Series;
 import com.hy.objects.Shoes;
-import com.hy.services.GetPicService;
-import com.hy.services.GetPicService.PicBinder;
+import com.hy.services.GetDataFromServerServices;
+import com.hy.services.GetDataService;
+import com.hy.services.GetDataService.PicBinder;
 import com.hy.tools.CategoryCache;
 import com.hy.tools.Holder;
+import com.hy.tools.OnAddMoreListener;
 import com.hy.tools.StopScrollAddList;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -31,6 +37,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.view.Menu;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -40,28 +47,62 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class BrandListActivity extends Activity {
 
 	private DBAdapter dbAdapter;
 	private StopScrollAddList brandList;
 	private CategoryAdapter adapter;
-	private GetPicService picService;
+	private GetDataService dataService;
 	private CategoryCache categoryCache;
+	private Handler mainHandler;
+	private PullRefreshLayout refreshLayout;
+    private int NOMORE = 0;
+    private int ERROR = -1;
+    private int OK = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        insterDataToDataBase();
-        picService = ((BSSApplication)getApplication()).getService();
+//        insterDataToDataBase();
+        dbAdapter = ((BSSApplication)getApplication()).getdDbAdapter();
+        dataService = ((BSSApplication)getApplication()).getPicService();
         categoryCache = ((BSSApplication)getApplication()).getCategoryCache();
+        mainHandler = new Handler(){
+            @SuppressLint("NewApi")
+            @Override
+            public void handleMessage(Message msg) {
+                if(OK == msg.what){
+                    if(msg.arg1 == GetDataService.REFRESH){
+                    adapter.setList(dbAdapter.getBrandsList());
+                    brandList.setAdapter(adapter); 
+                    refreshLayout.setRefreshing(false);
+                    }else{
+                        int beginPosition = adapter.getCount();
+                        adapter.setList(dbAdapter.getBrandsList());
+                        brandList.setAdapter(adapter); 
+                        brandList.setSelection(beginPosition);
+                        brandList.setAdding(false);
+                    }
+                }else if (ERROR == msg.what) {
+                    Toast.makeText(BrandListActivity.this, "网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
+                    refreshLayout.setRefreshing(false);
+                }else {
+                    Toast.makeText(BrandListActivity.this, "服务器已被掏空...",Toast.LENGTH_SHORT).show();
+                    refreshLayout.setRefreshing(false);
+                }
+            }
+            
+        };
+//        getBrandFromServer();
         setContentView(R.layout.activity_category);
         brandList = (StopScrollAddList)findViewById(R.id.list);
         
         
-        brandList.setService(picService);
+        brandList.setService(dataService);
         brandList.SetCategoryCache(categoryCache);
         brandList.setScrollListener();
         
         adapter = new CategoryAdapter(this, dbAdapter.getBrandsList());
+        
         brandList.setAdapter(adapter);
         brandList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -72,45 +113,68 @@ public class MainActivity extends Activity {
 //                String brandName = categoryCache.getCategory(((CategoryInfo)(adapter.getItem(arg2))).getKey()).getName();
                 String brandName = ((Holder)(arg1.getTag())).getTextView().getText().toString();
                 levelInfo.add(brandName);
-                Intent intent = new Intent(MainActivity.this,SeriesListActivity.class);
+                Intent intent = new Intent(BrandListActivity.this,SeriesListActivity.class);
                 intent.putExtra("levelInfo", levelInfo);
-                MainActivity.this.startActivity(intent);
+                BrandListActivity.this.startActivity(intent);
             }
         });
         
-//        brandList.setOnScrollListener(new OnScrollListener(){
-//
-//            private int firstIndex;
-//            private int endIndex;
-//            private int viewIndex;
-//            private CategoryAdapter.ViewHolder holder;
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem,
-//                    int visibleItemCount, int totalItemCount) {
-//                firstIndex = firstVisibleItem;
-//                endIndex = firstVisibleItem+visibleItemCount-1;
-//                
-//            }
-//
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){
-//                    for(int n = firstIndex; n <= endIndex; n++){
-//                        viewIndex = n-firstIndex;
-//                        CategoryInfo info = (CategoryInfo)adapter.getItem(n);
-//                        String key = info.getKey();
-//                        if(null==categoryCache.getCategory(info.getKey())){
-//                        	holder = (CategoryAdapter.ViewHolder)(brandList.getChildAt(viewIndex).getTag());
-//                            picService.getPic(info.getTabaleName(), info.getId(), holder);
-//                        }
-//                    }
-//                }
-//            }
-//            
-//        });
+        refreshLayout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_RING);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            
+            @Override
+            public void onRefresh() {
+                getBrandFromServer(GetDataService.REFRESH);
+            }
+        });
+        brandList.setOnAddMoreListener(new OnAddMoreListener() {   
+            @Override
+            public void OnAddMore() {
+                getBrandFromServer(GetDataService.ADDMOER);
+            }
+        });
         
     }
 
+    private void getBrandFromServer(int model){
+        int BRABD = 1;
+        int startposition = dbAdapter.getStartProsition(BRABD);
+        dataService.getDataFromServer("brand", startposition,mainHandler,model);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private byte[] getPicBytes(InputStream inputStream){
     	int length = -1;
     	byte[] buffer = new byte[1024];

@@ -6,4 +6,21 @@
     <string name="hello_world">Hello world!</string>
     <string name="canNotCreateDB">无法创建数据库,请查看sd卡设置</string>
     <string name="OK">确定</string>
+    <string name="info">基本信息</string>
+    <string name="price">"价格: "</string>
+    <string name="code">"编号: "</string>
+    <string name="brand">"品牌: "</string>
+    <string name="series">"系列: "</string>
+    <string name="generation">"代系: "</string>
+    <string name="color">"配色: "</string>
+    <string name="season">"季节: "</string>
+    <string name="upper">"鞋帮: "</string>
+    <string name="upperMaterial">"鞋面材料: "</string>
+    <string name="lowMaterial">"鞋底材料: "</string>
+    <string name="function">"功能: "</string>
+    <string name="position">"位置: "</string>
+    <string name="technology">"科技: "</string>
+    <string name="idea">设计理念</string>
+    <string name="loadmore_label">加载更多</string>
+    
 </resources>

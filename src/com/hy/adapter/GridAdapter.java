@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class GridAdapter extends BaseAdapter {
+public class GridAdapter extends BaseAdapter implements GetSetList{
 
     private ArrayList<CategoryInfo> list;
     private LayoutInflater inflater;
@@ -30,6 +30,7 @@ public class GridAdapter extends BaseAdapter {
     private int pic_height;
     private Context context;
     private CategoryCache categoryCache;
+    private boolean flag;
     
     public GridAdapter(Context context, ArrayList<CategoryInfo> list){
         this.list = list;
@@ -63,6 +64,7 @@ public class GridAdapter extends BaseAdapter {
         ViewHolder holder;
         CategoryInfo info = list.get(position);
         if(null==convertView){
+            flag = true;
             convertView = inflater.inflate(R.layout.gridviewitem, null);
             holder = new ViewHolder();
             holder.relativeLayout = (RelativeLayout)convertView.findViewById(R.id.griditem_layout);
@@ -70,25 +72,29 @@ public class GridAdapter extends BaseAdapter {
             holder.imageView = (ImageView)convertView.findViewById(R.id.pic);
             holder.imageView.setBackground(null);//if not add , crash
             holder.textView = (TextView)convertView.findViewById(R.id.pic_name);
+            holder.textView.setTag(info.getId());
             convertView.setTag(holder);
-            ((BSSApplication)context.getApplicationContext()).getService().getPic(info.getTabaleName(), info.getId(), holder);
+            ((BSSApplication)context.getApplicationContext()).getPicService().getPic(info.getTabaleName(), info.getId(), holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
             if(null!=holder.imageView.getDrawable()){
                 holder.imageView.getDrawable().setCallback(null);
             }
         }
+        if(!flag){
         CategoryObject categoryObject = categoryCache.getCategory(info.getKey());
         if(null!=categoryObject){
             holder.imageView.setImageDrawable(categoryObject.getDrawable());
             holder.textView.setText(categoryObject.getName());
+            holder.textView.setTag(info.getId());
 //            holder.imageView.setVisibility(View.VISIBLE);
         }else{
             holder.imageView.setImageDrawable(null);
             holder.textView.setText(null);
+            holder.textView.setTag(-1);
 //            holder.imageView.setVisibility(View.INVISIBLE);
         }
-
+        }
         
         return convertView;
     }
@@ -107,6 +113,16 @@ public class GridAdapter extends BaseAdapter {
 
 			return textView;
 		}
+        @Override
+        public ImageView getArrowView() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        public BaseAdapter getAdapter() {
+            // TODO Auto-generated method stub
+            return null;
+        }
     }
 
     
@@ -121,5 +137,15 @@ public class GridAdapter extends BaseAdapter {
         int row_num = screenHeight/(200+2);
         
         return screenHeight/row_num;
+    }
+    @Override
+    public ArrayList<CategoryInfo> getList() {
+        
+        return this.list;
+    }
+    @Override
+    public void setList(ArrayList<CategoryInfo> list) {
+       
+        this.list = list;
     }
 }

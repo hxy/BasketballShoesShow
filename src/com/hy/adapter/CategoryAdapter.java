@@ -9,7 +9,7 @@ import com.hy.basketballshoesshow.R;
 import com.hy.objects.CategoryInfo;
 import com.hy.objects.CategoryObject;
 import com.hy.objects.OnGetDrawableListener;
-import com.hy.services.GetPicService;
+import com.hy.services.GetDataService;
 import com.hy.tools.CategoryCache;
 import com.hy.tools.Holder;
 
@@ -24,7 +24,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CategoryAdapter extends BaseAdapter {
+public class CategoryAdapter extends BaseAdapter implements GetSetList{
 
 	private ArrayList<CategoryInfo> list;
 	private LayoutInflater layInflater;
@@ -74,7 +74,7 @@ public class CategoryAdapter extends BaseAdapter {
 			holder.image = (ImageView)convertView.findViewById(R.id.img);
 			holder.text = (TextView)convertView.findViewById(R.id.name);
 			convertView.setTag(holder);
-			((BSSApplication)context.getApplicationContext()).getService().getPic(info.getTabaleName(), info.getId(), holder);
+			((BSSApplication)context.getApplicationContext()).getPicService().getPic(info.getTabaleName(), info.getId(), holder);
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 			if(null!=holder.image.getDrawable()){
@@ -106,6 +106,26 @@ public class CategoryAdapter extends BaseAdapter {
 		public TextView getTextView() {
 			return text;
 		}
+        @Override
+        public ImageView getArrowView() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        public BaseAdapter getAdapter() {
+            // TODO Auto-generated method stub
+            return null;
+        }
 	}
+	
+	public void setList(ArrayList<CategoryInfo> list){
+	    this.list = list;
+	}
+
+    @Override
+    public ArrayList<CategoryInfo> getList() {
+        
+        return this.list;
+    }
 
 }

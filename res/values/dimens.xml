@@ -12,4 +12,7 @@
     <dimen name="width_listArrow">100dp</dimen>
     <dimen name="height_listArrow">100dp</dimen>
     <dimen name="textsize_picName">20sp</dimen>
+    <dimen name="textsize_shoesInfo">24sp</dimen>
+    <dimen name="textsize_Info_big">22sp</dimen>
+    <dimen name="textsize_Info">20sp</dimen>
 </resources>

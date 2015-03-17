@@ -1,0 +1,14 @@
+create table shoes(_id int not null auto_increment,brand_name varchar(50),series_name varchar(50),generation_name varchar(50),color_name varchar(50),shoes_name varchar(50) UNIQUE,shoes_pic MEDIUMBLOB,shoes_price int,shoes_season varchar(50),shoes_upper varchar(50),shoes_upperMaterial varchar(50),shoes_lowMaterial varchar(50),shoes_function varchar(80),shoes_oisition varchar(50),shoes_sex varchar(20),shoes_technology varchar(50),shoes_indro text,primary key(_id));
+
+
+
+create table color(_id int not null auto_increment,brand_name varchar(50),series_name varchar(50),generation_name varchar(50),color_name varchar(50) UNIQUE,color_pic MEDIUMBLOB,primary key(_id));
+
+
+create table generation(_id int not null auto_increment,brand_name varchar(50),series_name varchar(50),generation_name varchar(50) UNIQUE,generation_pic MEDIUMBLOB,primary key(_id));
+
+
+create table series(_id int not null auto_increment,brand_name varchar(50),series_name varchar(50) UNIQUE,series_indro TEXT,series_pic MEDIUMBLOB,primary key(_id));
+
+
+CREATE TABLE brand(_id int NOT NULL auto_increment,brand_name VARCHAR(50) UNIQUE,brand_pic MEDIUMBLOB,PRIMARY KEY(_id));

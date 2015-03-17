@@ -1,5 +1,9 @@
 package com.hy.objects;
 
+import java.io.ByteArrayInputStream;
+
+import android.graphics.drawable.Drawable;
+
 public class Shoes {
 
 	private String brand;
@@ -105,6 +109,8 @@ public class Shoes {
 		return indro;
 	}
 	
-	
+	public Drawable getDrawable(){
+	    return Drawable.createFromStream(new ByteArrayInputStream(bitmapBytes), null);
+	}
 	
 }

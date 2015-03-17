@@ -1,7 +1,8 @@
 package com.hy.application;
 
 import com.hy.database.DBAdapter;
-import com.hy.services.GetPicService;
+import com.hy.services.GetDataFromServerServices;
+import com.hy.services.GetDataService;
 import com.hy.tools.CategoryCache;
 
 import android.app.Application;
@@ -16,7 +17,7 @@ public class BSSApplication extends Application {
 
     private Display mDisplay;
     private DBAdapter dbAdapter;
-    private GetPicService picService;
+    private GetDataService picService;
     private CategoryCache categoryCache;
     @Override
     public void onCreate() {
@@ -27,7 +28,8 @@ public class BSSApplication extends Application {
         categoryCache = CategoryCache.getInstance();
         
         
-        Intent intent = new Intent(this,GetPicService.class);
+        Intent intent = new Intent(this,GetDataService.class);
+        Intent intentData = new Intent(this,GetDataFromServerServices.class);
         ServiceConnection conn = new ServiceConnection() {  
             @Override  
             public void onServiceDisconnected(ComponentName name) {  
@@ -36,8 +38,10 @@ public class BSSApplication extends Application {
               
             @Override  
             public void onServiceConnected(ComponentName name, IBinder service) {  
+                String nameString = name.getShortClassName();
+                    picService = ((GetDataService.PicBinder)service).GetService();
 
-                picService = ((GetPicService.PicBinder)service).GetService();   
+                   
             }  
         };  
         bindService(intent, conn, BIND_AUTO_CREATE);
@@ -52,7 +56,7 @@ public class BSSApplication extends Application {
     public DBAdapter getdDbAdapter(){
         return dbAdapter;
     }
-    public GetPicService getService(){
+    public GetDataService getPicService(){
         return picService;
     }
     public CategoryCache getCategoryCache(){

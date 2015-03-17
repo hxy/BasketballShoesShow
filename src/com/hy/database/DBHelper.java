@@ -51,10 +51,10 @@ public class DBHelper extends SQLiteOpenHelper {
             "shoes_upper text," +
             "shoes_upperMaterial text," +
             "shoes_lowMaterial text," +
-            "shoes_function," +
-            "shoes_position," + //Guard,Forward,Center-forward
-            "shoes_sex," +
-            "shoes_technology," +
+            "shoes_function text," +
+            "shoes_position text," + //Guard,Forward,Center-forward
+            "shoes_sex text," +
+            "shoes_technology text," +
             "shoes_indro text);"; 
     
 	public DBHelper(Context context, String name, CursorFactory factory,

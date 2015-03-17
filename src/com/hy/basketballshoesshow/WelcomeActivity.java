@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
-public class Welcome extends Activity {
+public class WelcomeActivity extends Activity {
 
     private TextView textView;
     
@@ -28,7 +28,7 @@ public class Welcome extends Activity {
             public void run() {
                 try {
                     this.sleep(3000);
-                    Welcome.this.startActivity(new Intent(Welcome.this, MainActivity.class));
+                    WelcomeActivity.this.startActivity(new Intent(WelcomeActivity.this, BrandListActivity.class));
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
