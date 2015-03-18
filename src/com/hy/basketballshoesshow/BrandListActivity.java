@@ -85,9 +85,11 @@ public class BrandListActivity extends Activity {
                 }else if (ERROR == msg.what) {
                     Toast.makeText(BrandListActivity.this, "网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    brandList.setAdding(false);
                 }else {
                     Toast.makeText(BrandListActivity.this, "服务器已被掏空...",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    brandList.setAdding(false);
                 }
             }
             

@@ -208,6 +208,7 @@ public class GetDataService extends Service {
     
     private int getDataListAndInsertToDB(String category,ArrayList<String> levelInfo, int startServerId){
         String urlPath = null;
+        HttpURLConnection con;
         int count = 0;
         if("brand".equals(category)){
             urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Brand.jsp?startServerId="+startServerId;
@@ -223,7 +224,7 @@ public class GetDataService extends Service {
         
         try {
             URL url = new URL(urlPath);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET");
             con.setConnectTimeout(5000);
             if(con.getResponseCode() == 200){
@@ -231,14 +232,13 @@ public class GetDataService extends Service {
                 byte[] bytes = readStream(inputStream);
                 String jsonString = new String(bytes);
                 count = switchJsonToDataListAndInsertToDB(category,jsonString);
-                
+                con.disconnect();
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             count = -1;
         }
-        
         return count;
     }
     
