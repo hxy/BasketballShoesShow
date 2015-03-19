@@ -20,7 +20,6 @@ public class DetailActivity extends Activity {
     private TextView code;
     private TextView brand;
     private TextView series;
-    private TextView generation;
     private TextView color;
     private TextView season;
     private TextView upper;
@@ -41,7 +40,6 @@ public class DetailActivity extends Activity {
         code = (TextView)findViewById(R.id.code);
         brand = (TextView)findViewById(R.id.brand);
         series = (TextView)findViewById(R.id.series);
-        generation = (TextView)findViewById(R.id.generation);
         color = (TextView)findViewById(R.id.color);
         season = (TextView)findViewById(R.id.season);
         upper = (TextView)findViewById(R.id.upper);
@@ -62,7 +60,6 @@ public class DetailActivity extends Activity {
         code.setText(shoes.getName());
         brand.setText(shoes.getBrand());
         series.setText(shoes.getSeries());
-        generation.setText(shoes.getGeneration());
         color.setText(shoes.getColor());
         season.setText(shoes.getSeason());
         upper.setText(shoes.getUpper());

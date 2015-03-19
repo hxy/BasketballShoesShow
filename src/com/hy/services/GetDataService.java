@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -20,7 +21,6 @@ import com.hy.database.DBAdapter;
 import com.hy.objects.Brand;
 import com.hy.objects.CategoryObject;
 import com.hy.objects.Color;
-import com.hy.objects.Generation;
 import com.hy.objects.OnGetDrawableListener;
 import com.hy.objects.Series;
 import com.hy.objects.Shoes;
@@ -56,9 +56,8 @@ public class GetDataService extends Service {
     private int PIC = 1;
     private int BRAND = 1;
     private int SERIES = 2;
-    private int GENERATION = 3;
-    private int COLOR = 4;
-    private int SHOES = 5;
+    private int COLOR = 3;
+    private int SHOES = 4;
     private int NOMORE = 0;
     private int ERROR = -1;
     private int OK = 1;
@@ -214,12 +213,10 @@ public class GetDataService extends Service {
             urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Brand.jsp?startServerId="+startServerId;
         }else if("series".equals(category)){
             urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Series.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0);
-        }else if("generation".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Generation.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1);
         }else if("color".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Color.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1)+"&generationName="+levelInfo.get(2);
+            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Color.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1);
         }else if("shoes".equals(category)){
-            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Shoes.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1)+"&generationName="+levelInfo.get(2)+"&colorName="+levelInfo.get(3);
+            urlPath = "http://10.0.2.2:8080/BasketballShoesShow/Shoes.jsp?startServerId="+startServerId+"&brandName="+levelInfo.get(0)+"&seriesName="+levelInfo.get(1)+"&colorName="+levelInfo.get(2);
         }
         
         try {
@@ -227,6 +224,8 @@ public class GetDataService extends Service {
             con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET");
             con.setConnectTimeout(5000);
+//            con.setRequestProperty("Accept-Charset", "gb2312");
+//            con.setRequestProperty("Accept-Language", "zh-CN");
             if(con.getResponseCode() == 200){
                 InputStream inputStream = con.getInputStream();
                 byte[] bytes = readStream(inputStream);
@@ -275,26 +274,14 @@ public class GetDataService extends Service {
             if(-1!=dbAdapter.insertSeries(series)){
                 return 1;
             }
-        }else if("generation".equals(category)){
-            int serverId = jsonObject.getInt("serverId");
-            String brandName = jsonObject.getString("brandName");
-            String seriesName = jsonObject.getString("seriesName");
-            String generationName = jsonObject.getString("generationName");
-            String generationPic = jsonObject.getString("generationPic");
-            picBytes = Base64.decode(generationPic, Base64.DEFAULT);
-            Generation generation = new Generation(serverId,brandName, seriesName, generationName,picBytes);
-            if(-1!=dbAdapter.insertGeneration(generation)){
-                return 1;
-            }
         }else if ("color".equals(category)) {
             int serverId = jsonObject.getInt("serverId");
             String brandName = jsonObject.getString("brandName");
             String seriesName = jsonObject.getString("seriesName");
-            String generationName = jsonObject.getString("generationName");
             String colorName = jsonObject.getString("colorName");
             String colorPic = jsonObject.getString("colorPic");
             picBytes = Base64.decode(colorPic, Base64.DEFAULT);
-            Color color = new Color(serverId,brandName, seriesName, generationName,colorName,picBytes);
+            Color color = new Color(serverId,brandName, seriesName,colorName,picBytes);
             if(-1!=dbAdapter.insertColor(color)){
                 return 1;
             }
@@ -303,7 +290,6 @@ public class GetDataService extends Service {
             int serverId = jsonObject.getInt("serverId");
             String brandName = jsonObject.getString("brandName");
             String seriesName = jsonObject.getString("seriesName");
-            String generationName = jsonObject.getString("generationName");
             String colorName = jsonObject.getString("colorName");
             String shoesName = jsonObject.getString("shoesName");
             String shoesPic = jsonObject.getString("shoesPic");
@@ -318,7 +304,7 @@ public class GetDataService extends Service {
             String shoesSex = jsonObject.getString("shoesSex");
             String shoesTechnology = jsonObject.getString("shoesTechnology");
             String shoesIndro = jsonObject.getString("shoesIndro");
-            Shoes shoes = new Shoes(serverId,brandName, seriesName, generationName, colorName, shoesName, picBytes, shoesPrice, shoesSeason, shoesUpper, shoesUpperMaterial, shoesLowMaterial, shoesFunction, shoesPosition, shoesSex, shoesTechnology, shoesIndro);
+            Shoes shoes = new Shoes(serverId,brandName, seriesName, colorName, shoesName, picBytes, shoesPrice, shoesSeason, shoesUpper, shoesUpperMaterial, shoesLowMaterial, shoesFunction, shoesPosition, shoesSex, shoesTechnology, shoesIndro);
             if(-1!=dbAdapter.insertShoes(shoes)){
                 return 1;
             }

@@ -1,6 +1,6 @@
 <%@page import="objects.Series"%>
 <%@page contentType="text/html"%>
-<%@page pageEncoding="gb2312"%>
+<%@page pageEncoding="utf8"%>
 <%@taglib prefix="json" uri="http://www.atg.com/taglibs/json"%>
 <%@page import="database.DBOperation"%>
 <%@page import="java.util.*"%>
@@ -9,8 +9,8 @@
 <jsp:setProperty name="DB" property="*" />
 
 <%
-	request.setCharacterEncoding("gb2312");
-	response.setCharacterEncoding("gb2312");
+	request.setCharacterEncoding("utf8");
+	response.setCharacterEncoding("utf8");
 	int startServerId = Integer.parseInt(request
 			.getParameter("startServerId"));
 	String brandName = request.getParameter("brandName");
@@ -20,6 +20,8 @@
 	
 	ArrayList<Series> seriesList = DB.getSeries();
 	System.out.println("series number:" + seriesList.size());
+	System.out.println(seriesList.get(0).getIndro());
+	System.out.println("乱码");
 %>
 <json:array name="seriesList" var="series" items="${DB.getSeries()}">
 	<json:object>

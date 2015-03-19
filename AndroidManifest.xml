@@ -28,7 +28,6 @@
         <activity android:name=".BrandListActivity"/>
         <activity android:name=".SeriesListActivity"/>
         <activity android:name=".IntroduceActivity"/>
-        <activity android:name=".GenerationListActivity"/>
         <activity android:name=".ColorListActivity"/>
         <activity android:name=".ShoesListActivity"/>
         <activity android:name=".DetailActivity"/>

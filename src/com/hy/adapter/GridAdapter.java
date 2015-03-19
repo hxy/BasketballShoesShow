@@ -30,7 +30,7 @@ public class GridAdapter extends BaseAdapter implements GetSetList{
     private int pic_height;
     private Context context;
     private CategoryCache categoryCache;
-    private boolean flag;
+//    private boolean flag;
     
     public GridAdapter(Context context, ArrayList<CategoryInfo> list){
         this.list = list;
@@ -64,7 +64,7 @@ public class GridAdapter extends BaseAdapter implements GetSetList{
         ViewHolder holder;
         CategoryInfo info = list.get(position);
         if(null==convertView){
-            flag = true;
+//            flag = true;
             convertView = inflater.inflate(R.layout.gridviewitem, null);
             holder = new ViewHolder();
             holder.relativeLayout = (RelativeLayout)convertView.findViewById(R.id.griditem_layout);
@@ -81,7 +81,7 @@ public class GridAdapter extends BaseAdapter implements GetSetList{
                 holder.imageView.getDrawable().setCallback(null);
             }
         }
-        if(!flag){
+//        if(!flag){
         CategoryObject categoryObject = categoryCache.getCategory(info.getKey());
         if(null!=categoryObject){
             holder.imageView.setImageDrawable(categoryObject.getDrawable());
@@ -94,7 +94,7 @@ public class GridAdapter extends BaseAdapter implements GetSetList{
             holder.textView.setTag(-1);
 //            holder.imageView.setVisibility(View.INVISIBLE);
         }
-        }
+//        }
         
         return convertView;
     }

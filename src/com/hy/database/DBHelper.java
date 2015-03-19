@@ -24,21 +24,12 @@ public class DBHelper extends SQLiteOpenHelper {
             "series_name text, " +
             "series_indro text, " +
             "series_pic blob);"; 
-    static final String GENERATIONTABLE_CREATE =   
-            "create table generation( " +
-            "_id integer primary key autoincrement, " + 
-            "server_id integer," + 
-            "brand_name text, " +
-            "series_name text, " +
-            "generation_name text," +
-            "generation_pic blob)"; 
     static final String COLORTABLE_CREATE =   
             "create table color( " +
             "_id integer primary key autoincrement, " +  
             "server_id integer," + 
             "brand_name text, " +
             "series_name text, " +
-            "generation_name text," +
             "color_name text," +
             "color_pic blob);"; 
     static final String SHOESTABLE_CREATE =   
@@ -47,7 +38,6 @@ public class DBHelper extends SQLiteOpenHelper {
             "server_id integer," + 
             "brand_name text, " +
             "series_name text, " +
-            "generation_name text," +
             "color_name text," +
             "shoes_name text," +
             "shoes_pic blob," +
@@ -81,7 +71,6 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(BRANDTABLE_CREATE);
 		db.execSQL(SERIESTABLE_CREATE);
-		db.execSQL(GENERATIONTABLE_CREATE);
 		db.execSQL(COLORTABLE_CREATE);
 		db.execSQL(SHOESTABLE_CREATE);
 	}

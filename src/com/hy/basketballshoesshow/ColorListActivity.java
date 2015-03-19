@@ -27,7 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ColorListActivity extends Activity {
 
-    private StopScrollAddList seriesList;
+    private StopScrollAddList colorListView;
     private CategoryAdapter adapter;
     private DBAdapter dbAdapter;
     private ArrayList<String> levelInfo;
@@ -52,14 +52,14 @@ public class ColorListActivity extends Activity {
                 if(OK == msg.what){
                     if(msg.arg1 == GetDataService.REFRESH){
                     adapter.setList(getColorList(levelInfo));
-                    seriesList.setAdapter(adapter); 
+                    colorListView.setAdapter(adapter); 
                     refreshLayout.setRefreshing(false);
                     }else{
                         int beginPosition = adapter.getCount();
                         adapter.setList(getColorList(levelInfo));
-                        seriesList.setAdapter(adapter); 
-                        seriesList.setSelection(beginPosition);
-                        seriesList.setAdding(false);
+                        colorListView.setAdapter(adapter); 
+                        colorListView.setSelection(beginPosition);
+                        colorListView.setAdding(false);
                     }
                 }else if (ERROR == msg.what) {
                     Toast.makeText(ColorListActivity.this, "网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
@@ -72,18 +72,19 @@ public class ColorListActivity extends Activity {
             
         };
         setContentView(R.layout.activity_category);
-        seriesList = (StopScrollAddList) findViewById(R.id.list);
+        this.setTitle("颜色");
+        colorListView = (StopScrollAddList) findViewById(R.id.list);
         
-        seriesList.setService(dataService);
-        seriesList.SetCategoryCache(categoryCache);
-        seriesList.setScrollListener();
+        colorListView.setService(dataService);
+        colorListView.SetCategoryCache(categoryCache);
+        colorListView.setScrollListener();
         
         levelInfo = getIntent().getStringArrayListExtra("levelInfo");
         ArrayList<CategoryInfo> colorList = getColorList(levelInfo);
 //        if (0 != colorList.size()) {
             adapter = new CategoryAdapter(this, colorList);
-            seriesList.setAdapter(adapter);
-            seriesList.setOnItemClickListener(new OnItemClickListener() {
+            colorListView.setAdapter(adapter);
+            colorListView.setOnItemClickListener(new OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1,
@@ -106,7 +107,7 @@ public class ColorListActivity extends Activity {
                 getColorFromServer(GetDataService.REFRESH);
             }
         });
-        seriesList.setOnAddMoreListener(new OnAddMoreListener() {   
+        colorListView.setOnAddMoreListener(new OnAddMoreListener() {   
             @Override
             public void OnAddMore() {
                 getColorFromServer(GetDataService.ADDMOER);
@@ -115,18 +116,14 @@ public class ColorListActivity extends Activity {
     }
     
     private void getColorFromServer(int model){
-        int COLOR = 4;
+        int COLOR = 3;
         int startServerId = dbAdapter.getStartServerId(COLOR, levelInfo);
         dataService.getDataFromServer("color",levelInfo,startServerId,mainHandler,model);
     }
 
     private ArrayList<CategoryInfo> getColorList(ArrayList<String> levelInfo){
         ArrayList<CategoryInfo> colorList = null;
-        if(levelInfo.size()==3){
-            colorList = dbAdapter.getColorList(levelInfo.get(0), levelInfo.get(1),levelInfo.get(2));
-        }else if (levelInfo.size()==2) {
-            colorList = dbAdapter.getColorList(levelInfo.get(0), levelInfo.get(1));
-        }
+        colorList = dbAdapter.getColorList(levelInfo.get(0), levelInfo.get(1));
         return colorList;
     }
 }

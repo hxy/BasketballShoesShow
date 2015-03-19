@@ -7,15 +7,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" 
-        android:background="#FFFAF0">
+        android:background="#FFFAF0"
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/shoes_pic"
             android:layout_width="400dp"
-            android:layout_height="350dp" 
-            android:layout_gravity="center_horizontal"
-            />
+            android:layout_height="350dp"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="match_parent"
@@ -116,25 +115,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/generation"
-                    android:textSize="@dimen/textsize_Info" />
-
-                <TextView
-                    android:id="@+id/generation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/textsize_Info" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/color"
                     android:textSize="@dimen/textsize_Info" />
 
@@ -144,6 +124,26 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textsize_Info" />
             </LinearLayout>
+            
+                        <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/technology"
+                    android:textSize="@dimen/textsize_Info" />
+
+                <TextView
+                    android:id="@+id/technology"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_Info" />
+            </LinearLayout>
+            
         </TableRow>
 
         <TableRow
@@ -275,36 +275,19 @@
             </LinearLayout>
         </TableRow>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/technology"
-                android:textSize="@dimen/textsize_Info" />
-
-            <TextView
-                android:id="@+id/technology"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/textsize_Info" />
-        </LinearLayout>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#566596"
             android:text="@string/idea"
             android:textSize="@dimen/textsize_shoesInfo" />
+
         <TextView
-                android:id="@+id/idea"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/textsize_Info" 
-                android:singleLine="false"/>
+            android:id="@+id/idea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:textSize="@dimen/textsize_Info" />
     </LinearLayout>
 
 </ScrollView>

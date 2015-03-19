@@ -68,15 +68,18 @@ public class SeriesListActivity extends Activity {
                 }else if (ERROR == msg.what) {
                     Toast.makeText(SeriesListActivity.this, "网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    seriesListView.setAdding(false);
                 }else {
                     Toast.makeText(SeriesListActivity.this, "服务器已被掏空...",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    seriesListView.setAdding(false);
                 }
             }
             
         };
         
         setContentView(R.layout.activity_category);
+        this.setTitle("系列");
         seriesListView = (StopScrollAddList)findViewById(R.id.list);
         
         seriesListView.setService(dataService);
@@ -95,7 +98,7 @@ public class SeriesListActivity extends Activity {
                         int arg2, long arg3) {
                     String seriesName = ((Holder)(arg1.getTag())).getTextView().getText().toString();
                     levelInfo.add(seriesName);
-                    Intent intent = new Intent(SeriesListActivity.this,GenerationListActivity.class);
+                    Intent intent = new Intent(SeriesListActivity.this,ColorListActivity.class);
                     intent.putExtra("levelInfo", levelInfo);
                     SeriesListActivity.this.startActivity(intent);
                     levelInfo.remove(levelInfo.size()-1);

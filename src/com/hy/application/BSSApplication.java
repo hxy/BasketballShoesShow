@@ -1,7 +1,6 @@
 package com.hy.application;
 
 import com.hy.database.DBAdapter;
-import com.hy.services.GetDataFromServerServices;
 import com.hy.services.GetDataService;
 import com.hy.tools.CategoryCache;
 
@@ -29,7 +28,6 @@ public class BSSApplication extends Application {
         
         
         Intent intent = new Intent(this,GetDataService.class);
-        Intent intentData = new Intent(this,GetDataFromServerServices.class);
         ServiceConnection conn = new ServiceConnection() {  
             @Override  
             public void onServiceDisconnected(ComponentName name) {  

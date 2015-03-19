@@ -1,18 +1,18 @@
+<%@page import="sun.security.pkcs11.Secmod.DbMode"%>
 <%@page import="objects.Shoes"%>
 <%@page import="objects.Color"%>
-<%@page import="objects.Generation"%>
 <%@page import="objects.Brand"%>
 <%@page import="objects.Series"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.File"%>
 <%@page contentType="text/html"%>
-<%@page pageEncoding="UTF-8"%>
+<%@page pageEncoding="GBK"%>
 <%@page import="java.util.*"%>
 <%@page import="database.DBOperation"%>
 
 <html>
     <head>
-        <title>IBookä¹¦åŸ</title>
+        <title>IBookÊé³Ç</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
@@ -21,7 +21,7 @@
         <%             request.setCharacterEncoding("gb2312");
              response.setCharacterEncoding("gb2312");
              
-            /* File adidas = new File(application.getRealPath("/")+"/pics/adidas.png");
+             File adidas = new File(application.getRealPath("/")+"/pics/adidas.png");
              String s = adidas.getAbsolutePath();
              System.out.print(s);
              FileInputStream in = new FileInputStream(adidas);
@@ -66,57 +66,54 @@
              in.read(bytes,0,length);
              Brand reebokBrand = new Brand("REEBOK",bytes);
              DB.insertBrand(reebokBrand);
-             in.close();*/
+             in.close();
              %>
              <%
-             String seriesIndro = "1åŸºæœ¬ä»‹ç»ç¼–è¾‘\n"
-            		 +"  Nike Air Zoom æ˜¯è€å…‹æ°”å«æŠ€æœ¯ä¸­çš„ä¸€ç§ï¼Œè€å…‹æˆç†Ÿçš„æ°”å«æŠ€æœ¯ä¹‹ä¸€ï¼Œé™¤æ­¤ä¹‹å¤–ï¼Œè¿˜æœ‰MAX AIRï¼ŒAIR-SOLEã€‚Nike Air Zoomçš„ç‰¹ç‚¹æ˜¯è¶…è½»ã€è¶…è–„ï¼Œä¸”è¿™é¡¹çŸ®ç‚¹æŠ€æœ¯è¢«å¹¿æ³›è¿ç”¨äºè€å…‹çš„ç¯®çƒé‹ã€è·‘æ­¥é‹å’Œè®­ç»ƒé‹ä¸­ï¼Œç›¸æ¯”å¦å¤–ä¸¤ç§æ°”å«æŠ€æœ¯ï¼Œè¿™ç§æ°”å«æ˜¾å¾—è¾ƒç¡¬ï¼Œä½†åŒæ—¶ä¹Ÿæä¾›äº†æ›´å¥½çš„å¼¹æ€§ï¼Œèƒ½å¤Ÿä¸ºç©¿ç€è€…æä¾›æ›´ä½³çš„ååº”ã€‚nike air zoomä¸“ä¸šæ°”å«å†…å«ä¸€ç§ç‰¹æ®Šçš„æ°”ä½“ï¼Œä»¥é«˜å‹çš„æ–¹å¼çŒå…¥åšéŸ§çš„åˆæˆæ©¡èƒ¶å†…ã€‚Nike Air Zoomç§‘æŠ€ä¹‹æ‰€ä»¥æˆåŠŸçš„å…³é”®åœ¨äºNike Air Zoomä¸“ä¸šæ°”å«ä¸­ï¼Œç‰¹æ®Šçš„å¤§åˆ†å­æ°”ä½“ä½“ç§¯å¤§äºåˆæˆæ©¡èƒ¶å±‚çš„ç»†å¾®ç¼éš™ï¼Œæ‰€ä»¥æ°”å«ä¸­çš„æ°”ä½“ä¸ä¼šæµå¤±ã€‚Nike Air Zoomæ°”ä½“åˆ†å­å¸æ”¶å¤–æ¥çš„æŒ¯åŠ¨å’Œå†²å‡»å‹åŠ›ï¼Œç„¶åå¾ˆå¿«çš„æ¢å¤åŸæ¥çš„æ ·å­ï¼Œå¹¶å‡†å¤‡å¸æ”¶ä¸‹ä¸€æ¬¡å†²å‡»ã€‚åŒæ—¶ï¼Œå®ƒå¹¶ä¸ä¼šéšç€é‹å­çš„ç”Ÿå‘½å‘¨æœŸè€Œç£¨æŸã€‚\n"
-            		 +"2äº§å“è®¾è®¡ç¼–è¾‘\n"
-            		 +"  nike air zoomæ°”å«è®¾è®¡åœ¨ç¯®çƒé‹å†…ï¼Œä¸€èˆ¬æ˜¯ä¸å¯è§çš„ï¼Œå¦‚æœç¯®çƒé‹æ¬¾æœ‰è¿™ç§æ°”å«æŠ€æœ¯ï¼Œåˆ™ä¼šåœ¨é‹èº«æ ‡æœ‰zoomairå­—æ ·ï¼Œå…¶ä¸­è¾ƒä¸ºæœ‰ä»£è¡¨æ€§çš„é‹æ¬¾æœ‰ZOOM KOBE,ZOOM HUARACHE 2K,ZOOM LEBRONç³»åˆ—ç­‰ã€‚nike air zoomæ¯”ä¸€èˆ¬çš„airæ°”å«æŠ€æœ¯é™¤äº†åŒæ ·æ‹¥æœ‰å¡‘æ–™çš®çš„å¼ åŠ›ï¼Œè¿˜å¤šäº†è®¸å¤šå°¼é¾™çº¤ç»´ï¼Œæ‰€ä»¥å›å¤é€Ÿåº¦ä¸å¼¹æ€§å°±æ¯”æ™®é€šçš„airæ›´ä¼˜ç§€ã€‚"
-            		 +"nike air zoomçš„æ„é€ å°±æ˜¯ä¸€ç‰‡æ‰å¹³çŠ¶çš„æ°”å«ï¼Œç„¶åä¸­é—´æ˜¯è®¸å¤šå°¼é¾™çº¤ç»´ï¼Œçº¤ç»´çš„ä¸Šä¸‹ä¸¤ç«¯æœ‰ä¸€ä¸ªæ¤ç‰©çš„å¹³é¢ï¼Œå®ƒçš„å‡éœ‡åŸç†è¿˜æ˜¯è¾ƒä¸ºå¤æ‚çš„ï¼Œåˆ‡èº«ä½“ä¼šçš„ç©¿ç€è€…æ›´æœ‰æ„ŸåŒèº«å—çš„æ„Ÿè§‰ï¼Œnike air zoomä¸€èˆ¬åœ¨é‹å­å¤–é¢æ˜¯çœ‹ä¸è§çš„ï¼Œå…·å¤‡è¿™ç§æ°”å«çš„é‹ä¸€èˆ¬ä¼šåœ¨å†…éƒ¨çš„é‹èº«ä¸Šæœ‰zoom airå­—æ ·ï¼Œå…¶ä¸­ä»£è¡¨çš„æ¬¾å¼æœ‰æˆ‘ä»¬æ‰€ç†Ÿæ‚‰çš„zoom kobeç­‰ã€‚\n"
-            		 +"3äº§å“å‘æ˜ç¼–è¾‘\n"
-            		 +"  1978å¹´çµå…‰ä¸€ç°\n"
-            		 +"  æ°”å«å‘æ˜è€…æ³•å…°å…‹é²è¿ªï¼ˆFrank Rudyï¼‰é¦–æ¬¡æå‡ºâ€”â€”è¿ç”¨å……æ°”æ°”å«æ¥åŠ å¼ºæ…¢è·‘é‹çš„é¿éœ‡æ€§ã€‚ä¸€å¹´ä¹‹åï¼Œ Nike air zoomä¾¿æ€èµ·äº†è¿åŠ¨é‹ä¸šçš„é©å‘½ã€‚å½“å…¶ä»–è¿åŠ¨é‹å‚æ‹’ç»æ³•å…°å…‹é²è¿ªè¶…è„±å¸¸è§„çš„æƒ³è±¡åŠ›æ—¶ï¼ŒNikeå´é¼“åŠ±ä»–å®Œæˆè¿™ä¸ªå…ˆè¿›çš„æƒ³æ³•ã€‚\n"
-            		 +"4å‡éœ‡åŸç†ç¼–è¾‘\n"
-            		 +"  é¦–å…ˆï¼ŒNike air zoomçš„æ„é€ å°±æ˜¯ä¸€ç‰‡æ‰å¹³çŠ¶çš„æ°”å«ï¼Œç„¶åä¸­é—´æ˜¯è®¸å¤šå°¼é¾™çº¤ç»´ï¼Œçº¤ç»´çš„ä¸Šä¸‹ä¸¤ç«¯æœ‰ä¸€ä¸ªç»‡ç‰©çš„å¹³é¢ï¼Œç”¨å¯èƒ½æ˜¯çƒ­å‹çš„æ–¹å¼å›ºå®šåœ¨æ°”å«çš„ä¸Šä¸‹å†…å£ï¼Œå› æ°”ä½“å…·æœ‰ç­‰æ–¹å‘è†¨èƒ€çš„æ€§è´¨ï¼Œä¼šæœ‰å½¢æˆçƒçŠ¶çš„è¶‹åŠ¿ï¼Œæ‰€ä»¥ä¼šæŠŠå°¼é¾™çº¤ç»´æ‹‰ç›´æˆç´§ç»·çŠ¶æ€ï¼Œå› è€Œå½¢æˆå¹³è¡¡ï¼Œä½¿èƒ½ç»´æŒåœ¨è¿™ä¹ˆè–„çš„åšåº¦(8mm)ï¼Œå¦åˆ™ä¸€å®šä¼šé¼“èµ·æ¥ã€‚"
-            		 +"é‚£è¿™äº›å°¼é¾™çº¤ç»´å¦‚ä½•é¿éœ‡å‘¢ï¼Ÿä½ ä¸€å®šè·Ÿæˆ‘å¼€å§‹çš„æƒ³æ³•ä¸€æ ·ï¼Œä»¥ä¸ºæ˜¯å°¼é¾™çº¤ç»´è‡ªå·±å›å¼¹çš„æ˜¯ä¸æ˜¯ï¼Ÿè¿™å°±æ˜¯æˆ‘ä¹‹å‰æ„Ÿè§‰å¥‡æ€ªçš„åœ°æ–¹ã€‚"
-            		 +"ä¸¾ä¸ªä¾‹å­ï¼Œå½“æˆ‘ä»¬æ‹¿ç€ä¸€æ¡ç‰™çº¿æŠŠå®ƒæ‹‰ç›´ï¼Œè¿™æ—¶å€™å®ƒè·ŸNike air zoomä¸­çš„å°¼é¾™çº¤ç»´ä¸€æ ·å‘ˆç°ç´§ç»·çš„çŠ¶æ€ï¼Œå½“æŠŠå®ƒç”¨åŠ›å¾€ä¸­é—´å‹çš„æ—¶å€™ä¼šæ€ä¹ˆæ ·å‘¢?ç›´æ¥è½¯æ‰ï¼Œä¸ä¼šå¾€ä¸¤ç«¯å¼¹ã€‚"
-            		 +"ç»¼åˆæ¥è¯´å°±æ˜¯Nike air zoomæœ¬èº«å°±æ˜¯æ°”å«ï¼Œå·²å…·æœ‰æ°”å«çš„é¿éœ‡ç¼“å†²æ€§è´¨ï¼Œä½†ä¸­é—´åŠ å…¥äº†ä¸Šä¸‹ç«¯å›ºå®šçš„å°¼é¾™çº¤ç»´æ”¯æ’‘ææ–™ï¼Œåœ¨é¿éœ‡æ—¶å¯ä»¥çº¤ç»´æœ¬èº«è¢«æ‹‰é•¿æ‰€å¢åŠ çš„å¼ åŠ›æ¥é˜»æ­¢å—åŠ›éƒ¨åˆ†ç»§ç»­æºƒç¼©ï¼Œæ‰€ä»¥zoom airæ‰èƒ½åœ¨é‚£ä¹ˆçŸ­çš„è·ç¦»ä¸­ï¼Œæä¾›ç›¸å½“ä¼˜å¼‚çš„é¿éœ‡èƒ½åŠ›ï¼Œæ¥ç€å†ä»¥å¢åŠ çš„å¼ åŠ›å¼ºåˆ¶æ‹‰å›çº¤ç»´å¹³è¡¡çŠ¶æ€æ—¶çš„é•¿åº¦ï¼ŒæŒ¤å‹ç©ºæ°”ä½¿å¾—åŸæœ¬å—åŠ›éƒ¨ä½æ°”å‹å¢åŠ è€Œå›å¼¹ï¼Œæ‰€ä»¥æœ‰ç€ä»¤äººæƒŠè®¶çš„å¼¹æ€§ä¸åé¦ˆæ€§ã€‚"
-            		 +"å¦‚æœå°±æ™®é€šairçš„é¿éœ‡åŸç†æ¥çœ‹ï¼Œä¸»è¦ä¹Ÿæ˜¯å› æœªå—åŠ›éƒ¨ä½ä½“ç§¯å¢åŠ ï¼Œå¡‘æ–™çš®è†¨èƒ€æ‰€äº§ç”Ÿçš„å¼ åŠ›ï¼Œæ¥æä¾›å›å¤çš„å¼¹æ€§ï¼Œè€ŒNikeair zoomé™¤äº†åŒæ ·æ‹¥æœ‰å¡‘æ–™çš®çš„å¼ åŠ›ï¼Œè¿˜å¤šäº†è®¸å¤šå°¼é¾™çº¤ç»´ï¼Œæ‰€ä»¥å›å¤é€Ÿåº¦ä¸å¼¹æ€§å°±æ¯”æ™®é€šairæ›´ä¼˜ç§€ã€‚"
-            		 +"ä¸€è¨€è”½ä¹‹ï¼Œåˆ©ç”¨å°¼é¾™çº¤ç»´çš„å¼ åŠ›ä¸æ°”å‹ä¹‹é—´çš„ç›¸äº’è°ƒèŠ‚æ¥äº§ç”Ÿé¿éœ‡ä¸åé¦ˆçš„ä½œç”¨ã€‚\n"
-            		 +"  å› æ­¤åœ¨ç†è®ºä¸Šï¼Œå…¨é•¿å¼Nike air zoomå› ä¸ºé‡ç‚¹å—åŠ›éƒ¨ä½ä»¥å¤–åŒºåŸŸæ¯”å‰åå¼çš„è¦å¤§ï¼Œèƒ½æä¾›å¼ åŠ›çš„å°¼é¾™çº¤ç»´æ•°é‡è¾ƒå¤šï¼Œå¯¹é¿éœ‡ä¸å¼¹æ€§æœ‰å¸®åŠ©ï¼ŒNike air zoomçš„è®¾è®¡å¸ˆè‡ªå·±ä¹Ÿæè¿‡ï¼Œå…¨é•¿å¼Nike air zoomçš„é¿éœ‡è¡¨ç°æ€»æ˜¯ä»¤äººæƒŠè®¶ã€‚"
-            		 +"ä½†æ˜¯åœ¨è¶³å¼“éœ€è¦æ›´å¤šæ”¯æ’‘è€Œéé¿éœ‡è¿™ä¸ªè§’åº¦æ¥çœ‹ï¼Œå…¶å®è¿˜æ˜¯å¯ä»¥æŠŠNike air zoomçš„èŒƒå›´å¾€è¶³å¼“ä»¥å¤–çš„éƒ¨ä»½æ‰©å±•ï¼Œå¹¶ä¸”æŠŠåšåº¦å¢åŠ (Nike air zoom)æ¥æé«˜é¿éœ‡èƒ½åŠ›ï¼Œå¹¶éä½¿ç”¨å…¨é•¿å¼Nike air zoomå°±ä¸€å®šä¼šæ¯”è¾ƒç†æƒ³ã€‚";    
-             File anta = new File(application.getRealPath("/")+"pics/anta.png");
-             int length = (int)anta.length();
-             FileInputStream in = new FileInputStream(anta);
-             byte[] bytes = new byte[length];
-             in.read(bytes,0,length);
+             String seriesIndro = "1»ù±¾½éÉÜ±à¼­\n"
+            		 +"  Nike Air Zoom ÊÇÄÍ¿ËÆøµæ¼¼ÊõÖĞµÄÒ»ÖÖ£¬ÄÍ¿Ë³ÉÊìµÄÆøµæ¼¼ÊõÖ®Ò»£¬³ı´ËÖ®Íâ£¬»¹ÓĞMAX AIR£¬AIR-SOLE¡£Nike Air ZoomµÄÌØµãÊÇ³¬Çá¡¢³¬±¡£¬ÇÒÕâÏî°«µã¼¼Êõ±»¹ã·ºÔËÓÃÓÚÄÍ¿ËµÄÀºÇòĞ¬¡¢ÅÜ²½Ğ¬ºÍÑµÁ·Ğ¬ÖĞ£¬Ïà±ÈÁíÍâÁ½ÖÖÆøµæ¼¼Êõ£¬ÕâÖÖÆøµæÏÔµÃ½ÏÓ²£¬µ«Í¬Ê±Ò²Ìá¹©ÁË¸üºÃµÄµ¯ĞÔ£¬ÄÜ¹»Îª´©×ÅÕßÌá¹©¸ü¼ÑµÄ·´Ó¦¡£nike air zoom×¨ÒµÆøµæÄÚº¬Ò»ÖÖÌØÊâµÄÆøÌå£¬ÒÔ¸ßÑ¹µÄ·½Ê½¹àÈë¼áÈÍµÄºÏ³ÉÏğ½ºÄÚ¡£Nike Air Zoom¿Æ¼¼Ö®ËùÒÔ³É¹¦µÄ¹Ø¼üÔÚÓÚNike Air Zoom×¨ÒµÆøµæÖĞ£¬ÌØÊâµÄ´ó·Ö×ÓÆøÌåÌå»ı´óÓÚºÏ³ÉÏğ½º²ãµÄÏ¸Î¢·ìÏ¶£¬ËùÒÔÆøµæÖĞµÄÆøÌå²»»áÁ÷Ê§¡£Nike Air ZoomÆøÌå·Ö×ÓÎüÊÕÍâÀ´µÄÕñ¶¯ºÍ³å»÷Ñ¹Á¦£¬È»ºóºÜ¿ìµÄ»Ö¸´Ô­À´µÄÑù×Ó£¬²¢×¼±¸ÎüÊÕÏÂÒ»´Î³å»÷¡£Í¬Ê±£¬Ëü²¢²»»áËæ×ÅĞ¬×ÓµÄÉúÃüÖÜÆÚ¶øÄ¥Ëğ¡£\n"
+            		 +"2²úÆ·Éè¼Æ±à¼­\n"
+            		 +"  nike air zoomÆøµæÉè¼ÆÔÚÀºÇòĞ¬ÄÚ£¬Ò»°ãÊÇ²»¿É¼ûµÄ£¬Èç¹ûÀºÇòĞ¬¿îÓĞÕâÖÖÆøµæ¼¼Êõ£¬Ôò»áÔÚĞ¬Éí±êÓĞzoomair×ÖÑù£¬ÆäÖĞ½ÏÎªÓĞ´ú±íĞÔµÄĞ¬¿îÓĞZOOM KOBE,ZOOM HUARACHE 2K,ZOOM LEBRONÏµÁĞµÈ¡£nike air zoom±ÈÒ»°ãµÄairÆøµæ¼¼Êõ³ıÁËÍ¬ÑùÓµÓĞËÜÁÏÆ¤µÄÕÅÁ¦£¬»¹¶àÁËĞí¶àÄáÁúÏËÎ¬£¬ËùÒÔ»Ø¸´ËÙ¶ÈÓëµ¯ĞÔ¾Í±ÈÆÕÍ¨µÄair¸üÓÅĞã¡£"
+            		 +"nike air zoomµÄ¹¹Ôì¾ÍÊÇÒ»Æ¬±âÆ½×´µÄÆøµæ£¬È»ºóÖĞ¼äÊÇĞí¶àÄáÁúÏËÎ¬£¬ÏËÎ¬µÄÉÏÏÂÁ½¶ËÓĞÒ»¸öÖ²ÎïµÄÆ½Ãæ£¬ËüµÄ¼õÕğÔ­Àí»¹ÊÇ½ÏÎª¸´ÔÓµÄ£¬ÇĞÉíÌå»áµÄ´©×ÅÕß¸üÓĞ¸ĞÍ¬ÉíÊÜµÄ¸Ğ¾õ£¬nike air zoomÒ»°ãÔÚĞ¬×ÓÍâÃæÊÇ¿´²»¼ûµÄ£¬¾ß±¸ÕâÖÖÆøµæµÄĞ¬Ò»°ã»áÔÚÄÚ²¿µÄĞ¬ÉíÉÏÓĞzoom air×ÖÑù£¬ÆäÖĞ´ú±íµÄ¿îÊ½ÓĞÎÒÃÇËùÊìÏ¤µÄzoom kobeµÈ¡£\n"
+            		 +"3²úÆ··¢Ã÷±à¼­\n"
+            		 +"  1978ÄêÁé¹âÒ»ÏÖ\n"
+            		 +"  Æøµæ·¢Ã÷Õß·¨À¼¿ËÂ³µÏ£¨Frank Rudy£©Ê×´ÎÌá³ö¡ª¡ªÔËÓÃ³äÆøÆøµæÀ´¼ÓÇ¿ÂıÅÜĞ¬µÄ±ÜÕğĞÔ¡£Ò»ÄêÖ®ºó£¬ Nike air zoom±ãÏÆÆğÁËÔË¶¯Ğ¬ÒµµÄ¸ïÃü¡£µ±ÆäËûÔË¶¯Ğ¬³§¾Ü¾ø·¨À¼¿ËÂ³µÏ³¬ÍÑ³£¹æµÄÏëÏóÁ¦Ê±£¬NikeÈ´¹ÄÀøËûÍê³ÉÕâ¸öÏÈ½øµÄÏë·¨¡£\n"
+            		 +"4¼õÕğÔ­Àí±à¼­\n"
+            		 +"  Ê×ÏÈ£¬Nike air zoomµÄ¹¹Ôì¾ÍÊÇÒ»Æ¬±âÆ½×´µÄÆøµæ£¬È»ºóÖĞ¼äÊÇĞí¶àÄáÁúÏËÎ¬£¬ÏËÎ¬µÄÉÏÏÂÁ½¶ËÓĞÒ»¸öÖ¯ÎïµÄÆ½Ãæ£¬ÓÃ¿ÉÄÜÊÇÈÈÑ¹µÄ·½Ê½¹Ì¶¨ÔÚÆøµæµÄÉÏÏÂÄÚ±Ú£¬ÒòÆøÌå¾ßÓĞµÈ·½ÏòÅòÕÍµÄĞÔÖÊ£¬»áÓĞĞÎ³ÉÇò×´µÄÇ÷ÊÆ£¬ËùÒÔ»á°ÑÄáÁúÏËÎ¬À­Ö±³É½ô±Á×´Ì¬£¬Òò¶øĞÎ³ÉÆ½ºâ£¬Ê¹ÄÜÎ¬³ÖÔÚÕâÃ´±¡µÄºñ¶È(8mm)£¬·ñÔòÒ»¶¨»á¹ÄÆğÀ´¡£"
+            		 +"ÄÇÕâĞ©ÄáÁúÏËÎ¬ÈçºÎ±ÜÕğÄØ£¿ÄãÒ»¶¨¸úÎÒ¿ªÊ¼µÄÏë·¨Ò»Ñù£¬ÒÔÎªÊÇÄáÁúÏËÎ¬×Ô¼º»Øµ¯µÄÊÇ²»ÊÇ£¿Õâ¾ÍÊÇÎÒÖ®Ç°¸Ğ¾õÆæ¹ÖµÄµØ·½¡£"
+            		 +"¾Ù¸öÀı×Ó£¬µ±ÎÒÃÇÄÃ×ÅÒ»ÌõÑÀÏß°ÑËüÀ­Ö±£¬ÕâÊ±ºòËü¸úNike air zoomÖĞµÄÄáÁúÏËÎ¬Ò»Ñù³ÊÏÖ½ô±ÁµÄ×´Ì¬£¬µ±°ÑËüÓÃÁ¦ÍùÖĞ¼äÑ¹µÄÊ±ºò»áÔõÃ´ÑùÄØ?Ö±½ÓÈíµô£¬²»»áÍùÁ½¶Ëµ¯¡£"
+            		 +"×ÛºÏÀ´Ëµ¾ÍÊÇNike air zoom±¾Éí¾ÍÊÇÆøµæ£¬ÒÑ¾ßÓĞÆøµæµÄ±ÜÕğ»º³åĞÔÖÊ£¬µ«ÖĞ¼ä¼ÓÈëÁËÉÏÏÂ¶Ë¹Ì¶¨µÄÄáÁúÏËÎ¬Ö§³Å²ÄÁÏ£¬ÔÚ±ÜÕğÊ±¿ÉÒÔÏËÎ¬±¾Éí±»À­³¤ËùÔö¼ÓµÄÕÅÁ¦À´×èÖ¹ÊÜÁ¦²¿·Ö¼ÌĞøÀ£Ëõ£¬ËùÒÔzoom air²ÅÄÜÔÚÄÇÃ´¶ÌµÄ¾àÀëÖĞ£¬Ìá¹©Ïàµ±ÓÅÒìµÄ±ÜÕğÄÜÁ¦£¬½Ó×ÅÔÙÒÔÔö¼ÓµÄÕÅÁ¦Ç¿ÖÆÀ­»ØÏËÎ¬Æ½ºâ×´Ì¬Ê±µÄ³¤¶È£¬¼·Ñ¹¿ÕÆøÊ¹µÃÔ­±¾ÊÜÁ¦²¿Î»ÆøÑ¹Ôö¼Ó¶ø»Øµ¯£¬ËùÒÔÓĞ×ÅÁîÈË¾ªÑÈµÄµ¯ĞÔÓë·´À¡ĞÔ¡£"
+            		 +"Èç¹û¾ÍÆÕÍ¨airµÄ±ÜÕğÔ­ÀíÀ´¿´£¬Ö÷ÒªÒ²ÊÇÒòÎ´ÊÜÁ¦²¿Î»Ìå»ıÔö¼Ó£¬ËÜÁÏÆ¤ÅòÕÍËù²úÉúµÄÕÅÁ¦£¬À´Ìá¹©»Ø¸´µÄµ¯ĞÔ£¬¶øNikeair zoom³ıÁËÍ¬ÑùÓµÓĞËÜÁÏÆ¤µÄÕÅÁ¦£¬»¹¶àÁËĞí¶àÄáÁúÏËÎ¬£¬ËùÒÔ»Ø¸´ËÙ¶ÈÓëµ¯ĞÔ¾Í±ÈÆÕÍ¨air¸üÓÅĞã¡£"
+            		 +"Ò»ÑÔ±ÎÖ®£¬ÀûÓÃÄáÁúÏËÎ¬µÄÕÅÁ¦ÓëÆøÑ¹Ö®¼äµÄÏà»¥µ÷½ÚÀ´²úÉú±ÜÕğÓë·´À¡µÄ×÷ÓÃ¡£\n"
+            		 +"  Òò´ËÔÚÀíÂÛÉÏ£¬È«³¤Ê½Nike air zoomÒòÎªÖØµãÊÜÁ¦²¿Î»ÒÔÍâÇøÓò±ÈÇ°ºóÊ½µÄÒª´ó£¬ÄÜÌá¹©ÕÅÁ¦µÄÄáÁúÏËÎ¬ÊıÁ¿½Ï¶à£¬¶Ô±ÜÕğÓëµ¯ĞÔÓĞ°ïÖú£¬Nike air zoomµÄÉè¼ÆÊ¦×Ô¼ºÒ²Ìá¹ı£¬È«³¤Ê½Nike air zoomµÄ±ÜÕğ±íÏÖ×ÜÊÇÁîÈË¾ªÑÈ¡£"
+            		 +"µ«ÊÇÔÚ×ã¹­ĞèÒª¸ü¶àÖ§³Å¶ø·Ç±ÜÕğÕâ¸ö½Ç¶ÈÀ´¿´£¬ÆäÊµ»¹ÊÇ¿ÉÒÔ°ÑNike air zoomµÄ·¶Î§Íù×ã¹­ÒÔÍâµÄ²¿·İÀ©Õ¹£¬²¢ÇÒ°Ñºñ¶ÈÔö¼Ó(Nike air zoom)À´Ìá¸ß±ÜÕğÄÜÁ¦£¬²¢·ÇÊ¹ÓÃÈ«³¤Ê½Nike air zoom¾ÍÒ»¶¨»á±È½ÏÀíÏë¡£";    
+             File a = new File(application.getRealPath("/")+"pics/anta.png");
+             int l = (int)a.length();
+             FileInputStream i = new FileInputStream(a);
+             byte[] b = new byte[l];
+             i.read(b,0,l);
              Series antaSeries;
              String seriesName;
              String generationName;
-             Generation generation;
              String colorName;
              Color color;
              String shoesName;
              Shoes shoes;
              for(int n=0;n<70;n++){
             	 seriesName = "air"+n;
-                 antaSeries = new Series("ANTA",seriesName,bytes,seriesIndro);
+                 antaSeries = new Series("ANTA",seriesName,b,seriesIndro);
                  DB.insertSeries(antaSeries);
-             }
-             for(int i=0;i<70;i++){
-            	 generationName = i+"ä»£";
-            	 generation = new Generation("ANTA","air1",generationName,bytes);
              }
            	 for(int m = 0;m<70;m++){
         		 colorName = "color"+m;
-        		 color = new Color("ANTA","air1","1ä»£",colorName,bytes);
+        		 color = new Color("ANTA","air1",colorName,b);
+        		 DB.insertColor(color);
         	 }
     		 for(int h = 0;h<100;h++){
     			 shoesName = "shoes"+h;
-    			 shoes = new Shoes("ANTA", "air1","1ä»£","color1","NB-110",bytes,5000,"æ˜¥å­£","é«˜å¸®","å°¼é¾™","æ©¡èƒ¶","è€ç£¨","å‰é”‹","ç”·","æ°”å«",seriesIndro);
+    			 shoes = new Shoes("ANTA", "air1","color1",shoesName,b,5000,"´º¼¾","¸ß°ï","ÄáÁú","Ïğ½º","ÄÍÄ¥","Ç°·æ","ÄĞ","Æøµæ",seriesIndro);
+    			 DB.insertShoes(shoes);
     		 }
-             in.close();
+             i.close();
              
              %>
              
@@ -126,11 +123,11 @@
             <br>
              
               <form class="form-signin" method="post" action="Loginralidate.jsp">
-                <h2>ä¼šå‘˜ç™»å½•</h2>
-                <input type="text" class="input-block-level" placeholder="ç”¨æˆ·å" name="username" id="username" onblur="checkName()"><label id="user-info" style="color:#ff0000"></label>
-                <input type="password" class="input-block-level" placeholder="å¯†ç " name="password" id="password" onblur="checkPwd()"><label id="password-info" style="color:#ff0000"></label>
-                <button class="btn btn-large btn-primary sit " type="submit">ç™»é™†</button>
-                <input type="button" class="btn btn-large btn-primary" onclick="window.location.href='Register.jsp'" value="æ³¨å†Œ">
+                <h2>»áÔ±µÇÂ¼</h2>
+                <input type="text" class="input-block-level" placeholder="ÓÃ»§Ãû" name="username" id="username" onblur="checkName()"><label id="user-info" style="color:#ff0000"></label>
+                <input type="password" class="input-block-level" placeholder="ÃÜÂë" name="password" id="password" onblur="checkPwd()"><label id="password-info" style="color:#ff0000"></label>
+                <button class="btn btn-large btn-primary sit " type="submit">µÇÂ½</button>
+                <input type="button" class="btn btn-large btn-primary" onclick="window.location.href='Register.jsp'" value="×¢²á">
               </form>
            </div>
 <script>
@@ -140,7 +137,7 @@
 			var userInfo = document.getElementById("user-info");
 			var reg = /^\w+$/;
 			if(user.value.length==0){
-				userInfo.innerHTML = "ç”¨æˆ·åä¸èƒ½ä¸ºç©º";
+				userInfo.innerHTML = "ÓÃ»§Ãû²»ÄÜÎª¿Õ";
 				return 0;
 			}
 			userInfo.innerHTML = "";
@@ -150,7 +147,7 @@
 			var n = document.getElementById("password");
 			var passwordinfo = document.getElementById("password-info");
 			if(n.value.length==0){
-				passwordinfo.innerHTML = "å¯†ç ä¸èƒ½ä¸ºç©º!"
+				passwordinfo.innerHTML = "ÃÜÂë²»ÄÜÎª¿Õ!"
 				return 0;
 			}
 			passwordinfo.innerHTML = "";

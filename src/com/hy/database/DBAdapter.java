@@ -7,7 +7,6 @@ import com.hy.objects.Brand;
 import com.hy.objects.CategoryInfo;
 import com.hy.objects.CategoryObject;
 import com.hy.objects.Color;
-import com.hy.objects.Generation;
 import com.hy.objects.Series;
 import com.hy.objects.Shoes;
 
@@ -56,19 +55,6 @@ public class DBAdapter {
         return row;
     }
 
-    public long insertGeneration(Generation generation) {
-
-//        db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("server_id", generation.getServerId());
-        values.put("brand_name", generation.getBrandName());
-        values.put("series_name", generation.getSeriesName());
-        values.put("generation_name", generation.getName());
-        values.put("generation_pic", generation.getBitmapBytes());
-        long row = writableDB.insert("generation", null, values);
-//        db.close();
-        return row;
-    }
 
     public long insertColor(Color color) {
 
@@ -77,7 +63,6 @@ public class DBAdapter {
         values.put("server_id", color.getServerId());
         values.put("brand_name", color.getBrandName());
         values.put("series_name", color.getSeriesName());
-        values.put("generation_name", color.getGeneration());
         values.put("color_name", color.getName());
         values.put("color_pic", color.getBitmapBytes());
         long row = writableDB.insert("color", null, values);
@@ -92,7 +77,6 @@ public class DBAdapter {
         values.put("server_id", shoes.getServerId());
         values.put("brand_name", shoes.getBrand());
         values.put("series_name", shoes.getSeries());
-        values.put("generation_name", shoes.getGeneration());
         values.put("color_name", shoes.getColor());
         values.put("shoes_name", shoes.getName());
         values.put("shoes_pic", shoes.getBitmapBytes());
@@ -162,45 +146,6 @@ public class DBAdapter {
 
     }
 
-    public ArrayList<CategoryInfo> getGenerationList(String brand, String series) {
-//        db = dbHelper.getReadableDatabase();
-        Cursor cursor = readableDB.query("generation", new String[] {
-                "generation_name", "_id" }, "brand_name=? and series_name=?",
-                new String[] { brand, series }, null, null, null);
-        // String name;
-        int id;
-        // byte[] bitmapBytes = null;
-        ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
-        while (cursor.moveToNext()) {
-            // name = cursor.getString(cursor.getColumnIndex("generation"));
-            // bitmapBytes =
-            // cursor.getBlob(cursor.getColumnIndex("generation_pic"));
-            id = cursor.getInt(cursor.getColumnIndex("_id"));
-            list.add(new CategoryInfo("generation", id));
-        }
-//        db.close();
-        return list;
-    }
-
-    public ArrayList<CategoryInfo> getColorList(String brand, String series,
-            String generation) {
-//        db = dbHelper.getReadableDatabase();
-        Cursor cursor = readableDB.query("color", new String[] { "color_name", "_id" },
-                "brand_name=? and series_name=? and generation_name = ?",
-                new String[] { brand, series, generation }, null, null, null);
-        // String name;
-        // byte[] bitmapBytes;
-        int id;
-        ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
-        while (cursor.moveToNext()) {
-            // name = cursor.getString(cursor.getColumnIndex("color"));
-            // bitmapBytes = cursor.getBlob(cursor.getColumnIndex("color_pic"));
-            id = cursor.getInt(cursor.getColumnIndex("_id"));
-            list.add(new CategoryInfo("color", id));
-        }
-//        db.close();
-        return list;
-    }
 
     public ArrayList<CategoryInfo> getColorList(String brand, String series) {
 //        db = dbHelper.getReadableDatabase();
@@ -221,31 +166,7 @@ public class DBAdapter {
         return list;
     }
 
-    public ArrayList<CategoryInfo> getShoesList(String brand, String series,
-            String generation, String color) {
-//        db = dbHelper.getReadableDatabase();
-        Cursor cursor = readableDB
-                .query("shoes",
-                        new String[] { "shoes_name", "_id" },
-                        "brand_name=? and series_name=? and generation_name = ? and color_name = ?",
-                        new String[] { brand, series, generation, color },
-                        null, null, null);
-        // String name;
-        // byte[] bitmapBytes;
-        int id;
-        ArrayList<CategoryInfo> list = new ArrayList<CategoryInfo>();
-        while (cursor.moveToNext()) {
-            // name = cursor.getString(cursor.getColumnIndex("shoes_name"));
-            // bitmapBytes = cursor.getBlob(cursor.getColumnIndex("shoes_pic"));
-            id = cursor.getInt(cursor.getColumnIndex("_id"));
-            list.add(new CategoryInfo("shoes", id));
-        }
-//        db.close();
-        return list;
-    }
-
-    public ArrayList<CategoryInfo> getShoesList(String brand, String series,
-            String color) {
+    public ArrayList<CategoryInfo> getShoesList(String brand, String series,String color) {
 //        db = dbHelper.getReadableDatabase();
         Cursor cursor = readableDB.query("shoes", new String[] { "shoes_name", "_id" },
                 "brand_name=? and series_name=? and color_name = ?",
@@ -273,10 +194,6 @@ public class DBAdapter {
             int serverId = cursor.getInt(cursor.getColumnIndex("server_id"));
             String brand = cursor.getString(cursor.getColumnIndex("brand_name"));
             String series = cursor.getString(cursor.getColumnIndex("series_name"));
-            // if(-1!=cursor.getColumnIndex("generation_name")){
-            //
-            // }
-            String generation = cursor.getString(cursor.getColumnIndex("generation_name"));
             String color = cursor.getString(cursor.getColumnIndex("color_name"));
             String shoesName = cursor.getString(cursor.getColumnIndex("shoes_name"));
             byte[] pic = cursor.getBlob(cursor.getColumnIndex("shoes_pic"));
@@ -290,7 +207,7 @@ public class DBAdapter {
             String sex = cursor.getString(cursor.getColumnIndex("shoes_sex"));
             String technology = cursor.getString(cursor.getColumnIndex("shoes_technology"));
             String indro = cursor.getString(cursor.getColumnIndex("shoes_indro"));
-            shoes = new Shoes(serverId,brand, series, generation, color, shoesName, pic,
+            shoes = new Shoes(serverId,brand, series, color, shoesName, pic,
                     price, season, upper, upperMaterial, lowMaterial, function,
                     position, sex, technology, indro);
         }
@@ -325,14 +242,8 @@ public class DBAdapter {
         switch(category){
         case 1: sql = "select max(server_id) from brand";break;
         case 2: sql = "select max(server_id) from series where brand_name='"+levelInfo.get(0)+"'";break;
-        case 3: sql = "select max(server_id) from generation where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"'";break;
-        case 4: if(2==levelInfo.size()){
-            sql = "select max(server_id) from color where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"'";break;
-                }else {
-                    sql = "select max(server_id) from color where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"' and generation_name='"+levelInfo.get(2)+"'";break;
-                }
-            
-        case 5: sql = "select max(server_id) from shoes where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"' and generation_name='"+levelInfo.get(2)+"' and color_name="+levelInfo.get(3)+"'";break;
+        case 3: sql = "select max(server_id) from color where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"'";break;
+        case 4: sql = "select max(server_id) from shoes where brand_name='"+levelInfo.get(0)+"' and series_name='"+levelInfo.get(1)+"' and color_name='"+levelInfo.get(2)+"'";break;
         }
         Cursor cursor = readableDB.rawQuery(sql, null);
         cursor.moveToFirst();

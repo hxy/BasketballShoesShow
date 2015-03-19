@@ -72,15 +72,18 @@ public class ShoesListActivity extends Activity {
                 }else if (ERROR == msg.what) {
                     Toast.makeText(ShoesListActivity.this, "网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    hasFooterView = false;
                 }else {
                     Toast.makeText(ShoesListActivity.this, "服务器已被掏空...",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    hasFooterView = false;
                 }
             }
             
         };
         
         setContentView(R.layout.activity_shoeslist);
+        this.setTitle("鞋子");
         loadMore = (LinearLayout)findViewById(R.id.loadmore);
         gridView = (GridView)findViewById(R.id.grid_shoes);
 //        gridView.setColumnWidth(getColumnWidth());
@@ -157,18 +160,14 @@ public class ShoesListActivity extends Activity {
     }
 
     private void getShoesFromServer(int model){
-        int SHOES = 5;
+        int SHOES = 4;
         int startServerId = dbAdapter.getStartServerId(SHOES, levelInfo);
         dataService.getDataFromServer("shoes", levelInfo,startServerId,mainHandler,model);
     }
     
     private ArrayList<CategoryInfo> getShoesList(ArrayList<String> levelInfo){
         ArrayList<CategoryInfo> shoesList = null;
-        if(levelInfo.size()==4){
-            shoesList = dbAdapter.getShoesList(levelInfo.get(0), levelInfo.get(1),levelInfo.get(2),levelInfo.get(3));
-        }else if (levelInfo.size()==3) {
-            shoesList = dbAdapter.getShoesList(levelInfo.get(0), levelInfo.get(1),levelInfo.get(2));
-        }
+        shoesList = dbAdapter.getShoesList(levelInfo.get(0), levelInfo.get(1),levelInfo.get(2));
         return shoesList;
     }
 }
