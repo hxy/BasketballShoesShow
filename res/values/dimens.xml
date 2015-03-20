@@ -15,4 +15,6 @@
     <dimen name="textsize_shoesInfo">24sp</dimen>
     <dimen name="textsize_Info_big">22sp</dimen>
     <dimen name="textsize_Info">20sp</dimen>
+    <dimen name="clipButton_width">60dp</dimen>
+    <dimen name="clipButton_height">40dp</dimen>
 </resources>

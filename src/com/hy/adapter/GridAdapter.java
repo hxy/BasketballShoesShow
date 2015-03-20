@@ -91,7 +91,7 @@ public class GridAdapter extends BaseAdapter implements GetSetList{
         }else{
             holder.imageView.setImageDrawable(null);
             holder.textView.setText(null);
-            holder.textView.setTag(-1);
+            holder.textView.setTag(info.getId());
 //            holder.imageView.setVisibility(View.INVISIBLE);
         }
 //        }

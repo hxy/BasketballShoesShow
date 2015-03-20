@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.baoyz.widget.PullRefreshLayout;
 import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
 import com.hy.adapter.CategoryAdapter;
+import com.hy.addshoes.activity.AddShoesActivity;
 import com.hy.application.BSSApplication;
 import com.hy.basketballshoesshow.R;
 import com.hy.database.DBAdapter;
@@ -34,6 +35,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.AbsListView;
@@ -149,7 +151,16 @@ public class BrandListActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getOrder() == 100) {
+            startActivity(new Intent(this,AddShoesActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

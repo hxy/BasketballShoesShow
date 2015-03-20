@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.zhy.view.ClipImageLayout
+        android:id="@+id/clipImageLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" 
+        android:layout_alignParentTop="true">
+
+        <Button
+            android:id="@+id/clip_button"
+            android:layout_width="@dimen/clipButton_width"
+            android:layout_height="@dimen/clipButton_height"
+            android:layout_alignParentRight="true"
+            android:background="#76EE00"
+            android:text="@string/action_clip" />
+    </RelativeLayout>
+
+</RelativeLayout>

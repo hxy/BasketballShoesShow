@@ -2,13 +2,13 @@
 <resources>
 
     <string name="app_name">BasketballShoesShow</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">我要添加</string>
     <string name="hello_world">Hello world!</string>
     <string name="canNotCreateDB">无法创建数据库,请查看sd卡设置</string>
     <string name="OK">确定</string>
     <string name="info">基本信息</string>
     <string name="price">"价格: "</string>
-    <string name="code">"编号: "</string>
+    <string name="code">"编号/名称: "</string>
     <string name="brand">"品牌: "</string>
     <string name="series">"系列: "</string>
     <string name="color">"配色: "</string>
@@ -22,4 +22,9 @@
     <string name="idea">设计理念</string>
     <string name="loadmore_label">加载更多</string>
     
+    <string name="Ok_EN">OK</string>
+    <string name="select_image">选择图片</string>
+    <string name="submit">上传</string>
+    <string name="action_clip">确定</string>
+    <string name="info_not_complete">信息不完整,请填写完整后再上传</string>
 </resources>
