@@ -18,6 +18,12 @@ public class BSSApplication extends Application {
     private DBAdapter dbAdapter;
     private GetDataService picService;
     private CategoryCache categoryCache;
+    private boolean isAppFirst = true;
+    private boolean isBrandFirst = true;
+    private boolean isSeriesFirst = true;
+    private boolean isColorFirst = true;
+    private boolean isShoesFirst = true;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,4 +67,42 @@ public class BSSApplication extends Application {
     	return categoryCache;
     }
 
+    public boolean isAppFirst() {
+        return isAppFirst;
+    }
+    public void setAppFirst(boolean isFirst) {
+        this.isAppFirst = isFirst;
+    }
+    
+    public boolean isBrandFirst() {
+        return isBrandFirst;
+    }
+
+    public void setBrandFirst(boolean isBrandFirst) {
+        this.isBrandFirst = isBrandFirst;
+    }
+
+    public boolean isSeriesFirst() {
+        return isSeriesFirst;
+    }
+
+    public void setSeriesFirst(boolean isSeriesFirst) {
+        this.isSeriesFirst = isSeriesFirst;
+    }
+
+    public boolean isColorFirst() {
+        return isColorFirst;
+    }
+
+    public void setColorFirst(boolean isColorFirst) {
+        this.isColorFirst = isColorFirst;
+    }
+
+    public boolean isShoesFirst() {
+        return isShoesFirst;
+    }
+
+    public void setShoesFirst(boolean isShoesFirst) {
+        this.isShoesFirst = isShoesFirst;
+    }
 }

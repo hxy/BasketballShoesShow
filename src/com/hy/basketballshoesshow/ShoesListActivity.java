@@ -159,6 +159,15 @@ public class ShoesListActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(((BSSApplication)getApplication()).isAppFirst() && ((BSSApplication)getApplication()).isShoesFirst()){
+            ((BSSApplication)getApplication()).setShoesFirst(false);
+            getShoesFromServer(GetDataService.REFRESH);
+        }
+    }
+    
     private void getShoesFromServer(int model){
         int SHOES = 4;
         int startServerId = dbAdapter.getStartServerId(SHOES, levelInfo);

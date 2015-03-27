@@ -1,5 +1,10 @@
 package com.hy.basketballshoesshow;
 
+import java.io.File;
+import java.io.IOException;
+
+import com.hy.application.BSSApplication;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +22,20 @@ public class WelcomeActivity extends Activity {
         textView.setLayoutParams(new LayoutParams(300, 200));
         textView.setText("welcome!");
         setContentView(textView);
+        String path = this.getFilesDir().getPath()+File.separator+"flag.dat";
+        File file = new File(path);
+        if(file.exists()){
+            ((BSSApplication)getApplication()).setAppFirst(false);
+        }else{
+            ((BSSApplication)getApplication()).setAppFirst(true);
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
     }
 
     @Override
@@ -29,6 +48,7 @@ public class WelcomeActivity extends Activity {
                 try {
                     this.sleep(3000);
                     WelcomeActivity.this.startActivity(new Intent(WelcomeActivity.this, BrandListActivity.class));
+                    WelcomeActivity.this.finish();
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

@@ -140,6 +140,19 @@ public class BrandListActivity extends Activity {
         
     }
 
+    
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(((BSSApplication)getApplication()).isAppFirst() && ((BSSApplication)getApplication()).isBrandFirst()){
+            ((BSSApplication)getApplication()).setBrandFirst(false);
+            getBrandFromServer(GetDataService.REFRESH);
+        }
+    }
+
+
+
     private void getBrandFromServer(int model){
         int BRABD = 1;
         int startServerId = dbAdapter.getStartServerId(BRABD, null);

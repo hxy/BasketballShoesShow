@@ -64,9 +64,11 @@ public class ColorListActivity extends Activity {
                 }else if (ERROR == msg.what) {
                     Toast.makeText(ColorListActivity.this, "网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    colorListView.setAdding(false);
                 }else {
                     Toast.makeText(ColorListActivity.this, "服务器已被掏空...",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    colorListView.setAdding(false);
                 }
             }
             
@@ -114,6 +116,16 @@ public class ColorListActivity extends Activity {
             }
         });
     }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(((BSSApplication)getApplication()).isAppFirst() && ((BSSApplication)getApplication()).isColorFirst()){
+            ((BSSApplication)getApplication()).setColorFirst(false);
+            getColorFromServer(GetDataService.REFRESH);
+        }
+    }
+    
     
     private void getColorFromServer(int model){
         int COLOR = 3;

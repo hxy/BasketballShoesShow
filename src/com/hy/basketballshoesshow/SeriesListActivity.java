@@ -124,6 +124,15 @@ public class SeriesListActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(((BSSApplication)getApplication()).isAppFirst() && ((BSSApplication)getApplication()).isSeriesFirst()){
+            ((BSSApplication)getApplication()).setSeriesFirst(false);
+            getSeriesFromServer(GetDataService.REFRESH);
+        }
+    }
+    
     private void getSeriesFromServer(int model){
         int SERIES = 2;
         int startServerId = dbAdapter.getStartServerId(SERIES, levelInfo);

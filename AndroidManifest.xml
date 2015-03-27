@@ -35,6 +35,7 @@
         
         <activity android:name="com.hy.addshoes.activity.AddShoesActivity"/>
         <activity android:name="com.hy.addshoes.activity.CilpImageActivity"/>
+        <service android:name="com.hy.addshoes.services.UploadServices"/>
         
     </application>
 </manifest>

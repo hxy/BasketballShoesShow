@@ -17,4 +17,5 @@
     <dimen name="textsize_Info">20sp</dimen>
     <dimen name="clipButton_width">60dp</dimen>
     <dimen name="clipButton_height">40dp</dimen>
+    <dimen name="uploading_textsize">30sp</dimen>
 </resources>

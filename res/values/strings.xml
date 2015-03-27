@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">BasketballShoesShow</string>
-    <string name="action_settings">我要添加</string>
+    <string name="action_settings">我要上传</string>
     <string name="hello_world">Hello world!</string>
     <string name="canNotCreateDB">无法创建数据库,请查看sd卡设置</string>
     <string name="OK">确定</string>
@@ -11,6 +11,7 @@
     <string name="code">"编号/名称: "</string>
     <string name="brand">"品牌: "</string>
     <string name="series">"系列: "</string>
+    <string name="series_Indro">"系列介绍: "</string>
     <string name="color">"配色: "</string>
     <string name="season">"季节: "</string>
     <string name="upper">"鞋帮: "</string>
@@ -27,4 +28,13 @@
     <string name="submit">上传</string>
     <string name="action_clip">确定</string>
     <string name="info_not_complete">信息不完整,请填写完整后再上传</string>
+    <string name="no_brand">上传的品牌不存在，请将图片选择完全后再上传</string>
+    <string name="no_series">上传的系列不存在，请将系列一下的图片选择完全后再上传</string>
+    <string name="no_color">上传的颜色不存在，请将颜色一下的图片选择完全后再上传</string>
+    <string name="no_shoes">上传的鞋子不存在，请选择鞋子的图片后再上传</string>
+    <string name="have_shoes">上传的鞋子已存在</string>
+    <string name="network_error">网络错误,请稍后重试</string>
+    <string name="uploading">正在上传,请稍后...</string>
+    <string name="upload_ok">上传成功!</string>
+    <string name="upload_error">服务端错误,请重试</string>
 </resources>
