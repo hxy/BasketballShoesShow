@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import objects.Brand;
@@ -17,6 +18,7 @@ public class DBOperation {
 	private String brand_name;
 	private String series_name;
 	private String color_name;
+	private String shoes_name;
 	private Connection con;
 	
 	public DBOperation(){
@@ -44,11 +46,41 @@ public class DBOperation {
 	public void setColorName(String color_name){
 		this.color_name = color_name;
 	}
+	public void setshoesName(String shoes_name){
+		this.shoes_name = shoes_name;
+	}
 	
 	public ArrayList<Brand> getBrands() {
 
 		ArrayList<Brand> list = new ArrayList<Brand>();
 		String sql = "select * from brand where _id > "+startServerId+" limit " + 0 + "," + 20;
+		System.out.println(sql);
+		try {
+//			Class.forName("com.mysql.jdbc.Driver");
+//			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + "shoesShow" + "?user=" + "root" + "&password=" + "huangyue");
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			int serverId;
+			String name = null;
+			byte[] bitmapBytes;
+			while (rs.next()) {
+				serverId = rs.getInt("_id");
+				name = rs.getString("brand_name");
+				bitmapBytes = rs.getBytes("brand_pic");
+				Brand brand = new Brand(serverId,name, bitmapBytes);
+				list.add(brand);
+			}
+			//con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public ArrayList<Brand> getAllBrands() {
+
+		ArrayList<Brand> list = new ArrayList<Brand>();
+		String sql = "select * from brand";
 		System.out.println(sql);
 		try {
 //			Class.forName("com.mysql.jdbc.Driver");
@@ -100,6 +132,36 @@ public class DBOperation {
 		}
 		return list;
 	}
+	
+	public ArrayList<Series> getAllSeries() {
+		ArrayList<Series> list = new ArrayList<Series>();
+		String sql = "select * from series where brand_name = '"+brand_name+"'";
+		try {
+//			Class.forName("com.mysql.jdbc.Driver");
+//			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + "shoesShow" + "?user=" + "root" + "&password=" + "huangyue");
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			int serverId;
+			String brandName = null;
+			String name = null;
+			String indro = null;
+			byte[] bitmapBytes;
+			while (rs.next()) {
+				serverId = rs.getInt("_id");
+				brandName = rs.getString("brand_name");
+				name = rs.getString("series_name");
+				indro = rs.getString("series_indro");
+				bitmapBytes = rs.getBytes("series_pic");
+				Series series = new Series(serverId,brandName, name, bitmapBytes, indro);
+				list.add(series);
+			}
+			//con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 
 	public ArrayList<Color> getColors() {
 		ArrayList<Color> list = new ArrayList<Color>();
@@ -193,8 +255,8 @@ public class DBOperation {
 	
 	
 	
-	public void insertBrand(Brand brand) {
-		try {
+	public void insertBrand(Brand brand) throws SQLException {
+	
 //			Class.forName("com.mysql.jdbc.Driver");
 //			Connection con = DriverManager
 //					.getConnection("jdbc:mysql://localhost/" + "shoesShow"
@@ -205,14 +267,10 @@ public class DBOperation {
 			stat.setBytes(2, brand.getBitmapBytes());
 			int n = stat.executeUpdate();
 			//con.close();
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
 	}
 
-	public void insertSeries(Series series) {
-		try {
+	public void insertSeries(Series series) throws SQLException {
+	
 //			Class.forName("com.mysql.jdbc.Driver");
 //			Connection con = DriverManager
 //					.getConnection("jdbc:mysql://localhost/" + "shoesShow"
@@ -225,14 +283,11 @@ public class DBOperation {
 			stat.setBytes(4, series.getBitmapBytes());
 			int n = stat.executeUpdate();
 			//con.close();
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
+	
 	}
 
-	public void insertColor(Color color) {
-		try {
+	public void insertColor(Color color) throws SQLException {
+
 //			Class.forName("com.mysql.jdbc.Driver");
 //			Connection con = DriverManager
 //					.getConnection("jdbc:mysql://localhost/" + "shoesShow"
@@ -245,14 +300,11 @@ public class DBOperation {
 			stat.setBytes(4, color.getBitmapBytes());
 			int n = stat.executeUpdate();
 			//con.close();
-		} catch (Exception e) {
 
-			e.printStackTrace();
-		}
 	}
 
-	public void insertShoes(Shoes shoes) {
-		try {
+	public void insertShoes(Shoes shoes) throws SQLException {
+
 //			Class.forName("com.mysql.jdbc.Driver");
 //			Connection con = DriverManager
 //					.getConnection("jdbc:mysql://localhost/" + "shoesShow"
@@ -277,9 +329,154 @@ public class DBOperation {
 			stat.setString(15, shoes.getIndro());
 			int n = stat.executeUpdate();
 			//con.close();
-		} catch (Exception e) {
-
+	}
+	
+	
+	public int delete(String table,String serverId) throws SQLException{
+		String sql = "delete from "+table+" where _id='"+serverId+"'";
+		PreparedStatement stat = con.prepareStatement(sql);
+		return stat.executeUpdate();
+	}
+	
+	public Object getOneCategory(String table,String serverId) throws SQLException{
+		String sql = null;
+		System.out.println(table+":"+serverId);
+		if("brand".equals(table)){
+			sql = "select * from brand where _id='"+serverId+"'";
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			rs.next();
+			int id = rs.getInt("_id");
+			String name = rs.getString("brand_name");
+			byte[] bitmapBytes = rs.getBytes("brand_pic");
+			Brand brand = new Brand(id,name, bitmapBytes);
+			return brand;
+		}else if("series".equals(table)){
+			sql = "select * from series where _id='"+serverId+"'";
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			rs.next();
+			int id = rs.getInt("_id");
+			String brandName = rs.getString("brand_name");
+			String name = rs.getString("series_name");
+			String indro = rs.getString("series_indro");
+			byte[] bitmapBytes = rs.getBytes("series_pic");
+			Series series = new Series(id,brandName, name, bitmapBytes, indro);
+			return series;
+		}else if ("color".equals(table)) {
+			sql = "select * from color where _id='"+serverId+"'";
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			rs.next();
+			int id = rs.getInt("_id");
+			String brandName = rs.getString("brand_name");
+			String seriesName = rs.getString("series_name");
+			String name = rs.getString("color_name");
+			byte[] bitmapBytes = rs.getBytes("color_pic");
+			Color color = new Color(id,brandName, seriesName,name, bitmapBytes);
+			return color;
+		}else{
+			sql = "select * from shoes where _id='"+serverId+"'";
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			rs.next();
+			int id = rs.getInt("_id");
+			String brandName = rs.getString("brand_name");
+			String seriesName = rs.getString("series_name");
+			String colorName = rs.getString("color_name");
+			String name = rs.getString("shoes_name");
+			byte[] bitmapBytes = rs.getBytes("shoes_pic");
+			int shoes_price = rs.getInt("shoes_price");
+			String shoes_season = rs.getString("shoes_season");
+			String shoes_upper = rs.getString("shoes_upper");
+			String shoes_upperMaterial = rs.getString("shoes_upperMaterial");
+			String shoes_lowMaterial = rs.getString("shoes_lowMaterial");
+			String shoes_function = rs.getString("shoes_function");
+			String shoes_oisition = rs.getString("shoes_oisition");
+			String shoes_sex = rs.getString("shoes_sex");
+			String shoes_technology = rs.getString("shoes_technology");
+			String shoes_indro = rs.getString("shoes_indro");
+			Shoes shoes = new Shoes(id,brandName, seriesName, colorName, name, bitmapBytes, shoes_price, shoes_season, shoes_upper, shoes_upperMaterial, shoes_lowMaterial, shoes_function, shoes_oisition, shoes_sex, shoes_technology, shoes_indro);
+			return shoes;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public String checkInfos(){
+		String string = null;
+		if(checkBrand(brand_name)){
+			string = "brand";
+			if(checkSeries(brand_name, series_name)){
+				string = "series";
+				if(checkColor(brand_name, series_name, color_name)){
+					string = "color";
+					if(checkShoes(brand_name, series_name, color_name, shoes_name)){
+						string = "shoes";
+					}
+				}
+			}
+		}
+		return string;
+	}
+	
+	private boolean checkBrand(String brandName){
+		boolean flag = true;
+		String sql = "select 1 from brand where brand_name='"+brandName+"' limit 1";
+		try{
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			flag = rs.next();
+		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
+		return flag;
+	}
+	
+	private boolean checkSeries(String brandName,String seriesName){
+		boolean flag = true;
+		String sql = "select 1 from series where brand_name='"+brandName+"' and series_name='"+seriesName+"' limit 1";
+		try{
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			flag = rs.next();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	
+	private boolean checkColor(String brandName,String seriesName,String colorName){
+		boolean flag = true;
+		String sql = "select 1 from color where brand_name='"+brandName+"' and series_name='"+seriesName+"' and color_name='"+colorName+"' limit 1";
+		try{
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			flag = rs.next();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	
+	private boolean checkShoes(String brandName,String seriesName,String colorName,String shoesName){
+		boolean flag = true;
+		String sql = "select 1 from shoes where brand_name='"+brandName+"' and series_name='"+seriesName+"' and color_name='"+colorName+"' and shoes_name='"+shoesName+"' limit 1";
+		try{
+			PreparedStatement stat = con.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
+			flag = rs.next();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return flag;
 	}
 }

@@ -72,10 +72,12 @@ public class ShoesListActivity extends Activity {
                 }else if (ERROR == msg.what) {
                     Toast.makeText(ShoesListActivity.this, "网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    loadMore.setVisibility(View.INVISIBLE);
                     hasFooterView = false;
                 }else {
                     Toast.makeText(ShoesListActivity.this, "服务器已被掏空...",Toast.LENGTH_SHORT).show();
                     refreshLayout.setRefreshing(false);
+                    loadMore.setVisibility(View.INVISIBLE);
                     hasFooterView = false;
                 }
             }
@@ -87,7 +89,8 @@ public class ShoesListActivity extends Activity {
         loadMore = (LinearLayout)findViewById(R.id.loadmore);
         gridView = (GridView)findViewById(R.id.grid_shoes);
 //        gridView.setColumnWidth(getColumnWidth());
-        gridView.setNumColumns(((BSSApplication)getApplicationContext()).getScreenWith()/(160+4));
+//        gridView.setNumColumns(((BSSApplication)getApplicationContext()).getScreenWith()/(160+4));
+        gridView.setNumColumns(3);
         levelInfo = getIntent().getStringArrayListExtra("levelInfo");
         
         ArrayList<CategoryInfo> shoesList = getShoesList(levelInfo);

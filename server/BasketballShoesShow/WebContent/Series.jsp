@@ -20,7 +20,6 @@
 	
 	ArrayList<Series> seriesList = DB.getSeries();
 	System.out.println("series number:" + seriesList.size());
-	System.out.println(seriesList.get(0).getIndro());
 	System.out.println("乱码");
 %>
 <json:array name="seriesList" var="series" items="${DB.getSeries()}">

@@ -20,7 +20,7 @@
         <jsp:setProperty name="DB" property="*"/>
         <%             request.setCharacterEncoding("gb2312");
              response.setCharacterEncoding("gb2312");
-             
+             try{
              File adidas = new File(application.getRealPath("/")+"/pics/adidas.png");
              String s = adidas.getAbsolutePath();
              System.out.print(s);
@@ -114,7 +114,9 @@
     			 DB.insertShoes(shoes);
     		 }
              i.close();
-             
+             }catch(Exception e){
+            	 e.printStackTrace();
+             }
              %>
              
 

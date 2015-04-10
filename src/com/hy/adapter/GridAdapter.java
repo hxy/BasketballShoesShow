@@ -128,15 +128,16 @@ public class GridAdapter extends BaseAdapter implements GetSetList{
     
     private int getPicWidth(Context context){
         int screenWith = ((BSSApplication)context.getApplicationContext()).getScreenWith();
-        int column_num = screenWith/(160+4);
-        
-        return screenWith/column_num;
+//        int column_num = screenWith/(160+4);
+//        return screenWith/column_num;
+
+        return (screenWith/3);
     }
     private int getPicHeight(Context context){
         int screenHeight = ((BSSApplication)context.getApplicationContext()).getScreenHeight();
-        int row_num = screenHeight/(200+2);
-        
-        return screenHeight/row_num;
+//        int row_num = screenHeight/(200+2);
+//        return screenHeight/row_num;
+        return (int)(screenHeight/3.5);
     }
     @Override
     public ArrayList<CategoryInfo> getList() {
